@@ -10,14 +10,14 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:snippetbox.helloWorld"
+		"onCommand:snippetbox.open"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "snippetbox.helloWorld",
-				"title": "Hello World"
+				"command": "snippetbox.open",
+				"title": "SnippetBox"
 			}
 		]
 	},
