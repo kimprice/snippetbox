@@ -33,6 +33,13 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
+		vscode.commands.registerCommand('snippetbox.refresh', () => {
+			HelloWorldPanel.kill();
+			HelloWorldPanel.createOrShow(context.extensionUri);
+		})
+	);
+
+	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetbox.open', () => {
 			// create and show a new webview
 			const panel = vscode.window.createWebviewPanel(

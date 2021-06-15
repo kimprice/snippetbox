@@ -11,7 +11,8 @@
 	],
 	"activationEvents": [
 		"onCommand:snippetbox.open",
-		"onCommand:snippetbox.helloWorld"
+		"onCommand:snippetbox.helloWorld",
+		"onCommand:snippetbox.refresh"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -24,7 +25,12 @@
 			{
 				"command": "snippetbox.helloWorld",
 				"category": "Adaptive Tool",
-				"title": "SnippetBox-HelloWorld"
+				"title": "HelloWorld"
+			},
+			{
+				"command": "snippetbox.refresh",
+				"category": "Adaptive Tool",
+				"title": "refresh"
 			}
 		]
 	},
