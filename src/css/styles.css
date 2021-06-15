@@ -10,3 +10,25 @@ ul {
     background-color: #f6f6f6; /* Add a grey background color */
     padding: 12px; /* Add some padding */
   }
+
+h1 {
+  font-family: fantasy;
+}
+
+h2 {
+  color:cornflowerblue;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+p {
+  color:rosybrown;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.line{
+  width: 112px;
+  height: 47px;
+  border-bottom: 1px grey;
+  position: absolute;
+  }
