@@ -13,6 +13,7 @@
 		"onCommand:snippetbox.open",
 		"onCommand:snippetbox.helloWorld",
 		"onCommand:snippetbox.refresh",
+		"onCommand:snippetbox.add",
 		"onView:snippetbox-sidebar"
 	],
 	"main": "./out/extension.js",
@@ -52,6 +53,11 @@
 				"command": "snippetbox.refresh",
 				"category": "Adaptive Tool",
 				"title": "refresh"
+			},
+			{
+				"command": "snippetbox.add",
+				"category": "Adaptive Tool",
+				"title": "Add Todo From Selection"
 			}
 		]
 	},

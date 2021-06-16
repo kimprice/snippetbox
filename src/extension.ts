@@ -34,10 +34,27 @@ export function activate(context: vscode.ExtensionContext) {
 		sidebarProvider
 	  )
 	);
-
+	
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetbox.helloWorld', () => {
 			HelloWorldPanel.createOrShow(context.extensionUri);
+		})
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('snippetbox.add', () => {
+			const { activeTextEditor } = vscode.window;
+
+			if (!activeTextEditor) {
+				vscode.window.showInformationMessage("No active text editor");
+				return;
+			}
+
+			const text = activeTextEditor.document.getText(
+				activeTextEditor.selection
+			);
+
+			vscode.window.showInformationMessage("Text: " + text);
 		})
 	);
 
