@@ -54,7 +54,10 @@ export function activate(context: vscode.ExtensionContext) {
 				activeTextEditor.selection
 			);
 
-			vscode.window.showInformationMessage("Text: " + text);
+			sidebarProvider._view?.webview.postMessage({
+				type: "new-todo",
+				value: text,
+			});
 		})
 	);
 
