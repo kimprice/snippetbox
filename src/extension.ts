@@ -36,6 +36,9 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('snippetbox.refresh', () => {
 			HelloWorldPanel.kill();
 			HelloWorldPanel.createOrShow(context.extensionUri);
+			setTimeout(() => {
+				vscode.commands.executeCommand("workbench.action.webview.openDeveloperTools");
+			}, 500);
 		})
 	);
 
