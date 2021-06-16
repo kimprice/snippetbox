@@ -28,6 +28,15 @@ export function activate(context: vscode.ExtensionContext) {
 	// context.subscriptions.push(disposable);
 
 	const sidebarProvider = new SidebarProvider(context.extensionUri);
+
+	const item = vscode.window.createStatusBarItem(
+		vscode.StatusBarAlignment.Right
+	);
+	// $ convention below is for icon and name in parenthesis is from codicons
+	item.text = "$(file-code) Add Todo";
+	item.command = "snippetbox.add";
+	item.show();
+
 	context.subscriptions.push(
 	  vscode.window.registerWebviewViewProvider(
 		"snippetbox-sidebar",
