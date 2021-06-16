@@ -1,4 +1,6 @@
 <script lang="ts">
 </script>
 
-<h1>meow</h1>
+<h1>does this work</h1>
+<input/>
+<button>yup</button>

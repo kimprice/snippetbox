@@ -12,10 +12,31 @@
 	"activationEvents": [
 		"onCommand:snippetbox.open",
 		"onCommand:snippetbox.helloWorld",
-		"onCommand:snippetbox.refresh"
+		"onCommand:snippetbox.refresh",
+		"onView:snippetbox-sidebar"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+			  {
+				"id": "snippetbox-sidebar-view",
+				"title": "SnippetBox",
+				"icon": "media/book.svg"
+			  }
+			]
+		  },
+		  "views": {
+			"snippetbox-sidebar-view": [
+			  {
+				"type": "webview",
+				"id": "snippetbox-sidebar",
+				"name": "SnippetBox",
+				"icon": "media/book.svg",
+				"contextualTitle": "SnippetBox"
+			  }
+			]
+		  },
 		"commands": [
 			{
 				"command": "snippetbox.open",

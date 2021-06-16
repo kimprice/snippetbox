@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { HelloWorldPanel } from './HelloWorldPanel';
+import { SidebarProvider } from './SidebarProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -26,6 +27,14 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// context.subscriptions.push(disposable);
 
+	const sidebarProvider = new SidebarProvider(context.extensionUri);
+	context.subscriptions.push(
+	  vscode.window.registerWebviewViewProvider(
+		"snippetbox-sidebar",
+		sidebarProvider
+	  )
+	);
+
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetbox.helloWorld', () => {
 			HelloWorldPanel.createOrShow(context.extensionUri);
@@ -33,12 +42,19 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('snippetbox.refresh', () => {
-			HelloWorldPanel.kill();
-			HelloWorldPanel.createOrShow(context.extensionUri);
+		vscode.commands.registerCommand('snippetbox.refresh', async () => {
+			// uncomment below when working on webview panel
+			// HelloWorldPanel.kill();
+			// HelloWorldPanel.createOrShow(context.extensionUri);
 			setTimeout(() => {
 				vscode.commands.executeCommand("workbench.action.webview.openDeveloperTools");
 			}, 500);
+
+			// working on sidebar
+			await vscode.commands.executeCommand("workbench.action.closeSidebar");
+			await vscode.commands.executeCommand("workbench.view.extension.snippetbox-sidebar-view");
+
+
 		})
 	);
 
