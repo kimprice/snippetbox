@@ -1,9 +1,11 @@
 <script lang="ts">
 import { onMount } from "svelte";
+import type { User } from "../types";
+import Todos from "./Todos.svelte";
 
     let accessToken = '';
     let loading = true;
-    let user: {name: string, id: number} | null = null;
+    let user: User | null = null;
 
     // gets run when panel first gets mounted, good place to add listeners
     onMount(async () => {
@@ -32,8 +34,16 @@ import { onMount } from "svelte";
 {#if loading}
     <div>loading...</div>
 {:else if user}
-    <pre>{JSON.stringify(user, null, 2)}</pre>
+    <!-- <pre>{JSON.stringify(user, null, 2)}</pre> -->
+    <Todos user={user}/>
+    <button on:click={() => {
+        accessToken='';
+        user = null;
+        tsvscode.postMessage({type: 'logout', value: undefined});
+    }}>logout</button>
 {:else}
-    <div>no user is logged in</div>
+    <button on:click={() => {
+        tsvscode.postMessage({type: 'authenticate', value: undefined});
+    }}>login with GitHub</button>
 {/if}
 

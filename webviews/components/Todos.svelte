@@ -1,6 +1,7 @@
 <script lang="ts">
-import { onMount } from "svelte";
-
+    import { onMount } from "svelte";
+    import type { User } from "../types";
+    export let user: User;
 
     let text = "";
     let todos: Array<{text: string, completed: boolean}> = []
@@ -23,6 +24,8 @@ import { onMount } from "svelte";
         text-decoration: line-through;
     }
 </style>
+
+<div>Hello: {user.name}</div>
 
 <form on:submit|preventDefault={() => {
     todos = [{text, completed: false}, ...todos]
