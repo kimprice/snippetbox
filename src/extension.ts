@@ -5,12 +5,16 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { HelloWorldPanel } from './HelloWorldPanel';
 import { SidebarProvider } from './SidebarProvider';
+import { authenticate } from './authenticate';
+import { TokenManager } from './TokenManager';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export let extContext: vscode.ExtensionContext;
+// export let extContext: vscode.ExtensionContext;
 export function activate(context: vscode.ExtensionContext) {
-	extContext = context;
+	// extContext = context;
+	TokenManager.globalState = context.globalState;
+	console.log("token value is: ", TokenManager.getToken());
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "snippetbox" is now active!');
@@ -47,6 +51,17 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetbox.helloWorld', () => {
 			HelloWorldPanel.createOrShow(context.extensionUri);
+		})
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('snippetbox.authenticate', () => {
+			try {
+				authenticate();
+			} catch (err) {
+				console.log(err);
+			}
+			
 		})
 	);
 

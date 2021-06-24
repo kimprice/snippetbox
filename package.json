@@ -14,30 +14,31 @@
 		"onCommand:snippetbox.helloWorld",
 		"onCommand:snippetbox.refresh",
 		"onCommand:snippetbox.add",
+		"onCommand:snippetbox.authenticate",
 		"onView:snippetbox-sidebar"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"viewsContainers": {
 			"activitybar": [
-			  {
-				"id": "snippetbox-sidebar-view",
-				"title": "SnippetBox",
-				"icon": "media/book.svg"
-			  }
+				{
+					"id": "snippetbox-sidebar-view",
+					"title": "SnippetBox",
+					"icon": "media/book.svg"
+				}
 			]
-		  },
-		  "views": {
+		},
+		"views": {
 			"snippetbox-sidebar-view": [
-			  {
-				"type": "webview",
-				"id": "snippetbox-sidebar",
-				"name": "SnippetBox",
-				"icon": "media/book.svg",
-				"contextualTitle": "SnippetBox"
-			  }
+				{
+					"type": "webview",
+					"id": "snippetbox-sidebar",
+					"name": "SnippetBox",
+					"icon": "media/book.svg",
+					"contextualTitle": "SnippetBox"
+				}
 			]
-		  },
+		},
 		"commands": [
 			{
 				"command": "snippetbox.open",
@@ -58,6 +59,11 @@
 				"command": "snippetbox.add",
 				"category": "Adaptive Tool",
 				"title": "Add Todo From Selection"
+			},
+			{
+				"command": "snippetbox.authenticate",
+				"category": "Adaptive Tool",
+				"title": "Authenticate"
 			}
 		]
 	},
@@ -77,6 +83,7 @@
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.0.4",
 		"@types/node": "^12.11.7",
+		"@types/polka": "^0.5.2",
 		"@types/vscode": "^1.52.0",
 		"@typescript-eslint/eslint-plugin": "^4.9.0",
 		"@typescript-eslint/parser": "^4.9.0",
@@ -93,5 +100,8 @@
 		"svelte-preprocess": "^4.7.3",
 		"typescript": "^4.1.2",
 		"vscode-test": "^1.4.1"
+	},
+	"dependencies": {
+		"polka": "^0.5.2"
 	}
 }
