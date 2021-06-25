@@ -1,49 +1,95 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import type { User } from "../types";
+    
     export let user: User;
-
+    export let accessToken: string;
     let text = "";
-    let todos: Array<{text: string, completed: boolean}> = []
+    let todos: Array<{text: string, completed: boolean, id: number}> = []
         // gets run when panel first gets mounted, good place to add listeners
-        onMount(async () => {
+    
+        async function addTodo(t: string) {
+            const response = await fetch(`${apiBaseUrl}/todo`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        text: t,
+                    }),
+                    headers: {
+                        "content-type": "application/json", // have to specify content type
+                        authorization: `Bearer ${accessToken}`,
+                    },
+                    });
+                    const { todo } = await response.json();
+                    todos = [todo, ...todos];
+            return
+        }
+    
+    onMount(async () => {
         window.addEventListener("message", async (event) => {
             const message = event.data; // The json data that the extension sent
             switch (message.type) {
                 case "new-todo":
-                todos = [{text: message.value, completed: false}, ...todos]
-                break;
+                    addTodo(message.value);
+                    break;
             }
         });
+
+        const response = await fetch(`${apiBaseUrl}/todo`, {
+            // no method specified = GET by default
+            headers: {
+                authorization: `Bearer ${accessToken}`,
+            },
+        });
+        const payload = await response.json();
+        todos = payload.todos;
         
     });
 </script>
 
 <style>
     .complete {
-        text-decoration: line-through;
+      text-decoration: line-through;
     }
-</style>
+  </style>
 
 <div>Hello: {user.name}</div>
 
-<form on:submit|preventDefault={() => {
-    todos = [{text, completed: false}, ...todos]
-    text = '';
-}}><input bind:value={text}/></form>
+<form
+  on:submit|preventDefault={async () => {
+    // todos = [{text, completed: false}, ...todos]
+    addTodo(text);
+    text = "";
+  }}
+>
+  <input bind:value={text} />
+</form>
 
 <!-- <pre>
     {JSON.stringify(todos, null, 2)}
 </pre> -->
 
 <ul>
-    {#each todos as todo (todo.text)}
-        <li
-        class:complete={todo.completed} 
-        on:click={() => {
-            todo.completed = !todo.completed;
-        }}>{todo.text}</li>
-    {/each}
+  {#each todos as todo (todo.id)}
+    <li
+      class:complete={todo.completed}
+      on:click={async () => {
+        todo.completed = !todo.completed;
+        const response = await fetch(`${apiBaseUrl}/todo`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                id: todo.id,
+            }),
+            headers: {
+                "content-type": "application/json", // have to specify content type
+                authorization: `Bearer ${accessToken}`,
+            },
+        });
+        console.log(await response.json()); 
+      }}
+    >
+      {todo.text}
+    </li>
+  {/each}
 </ul>
 
 <!-- <button on:click={() => {
@@ -59,3 +105,5 @@
         value: 'error message'
     });
 }}>click me for error</button> -->
+
+

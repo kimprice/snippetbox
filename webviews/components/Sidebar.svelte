@@ -35,7 +35,7 @@ import Todos from "./Todos.svelte";
     <div>loading...</div>
 {:else if user}
     <!-- <pre>{JSON.stringify(user, null, 2)}</pre> -->
-    <Todos user={user}/>
+    <Todos {user} {accessToken}/>
     <button on:click={() => {
         accessToken='';
         user = null;
