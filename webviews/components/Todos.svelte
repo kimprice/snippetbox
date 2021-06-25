@@ -4,8 +4,14 @@
     
     export let user: User;
     export let accessToken: string;
-    let text = "";
+    // let text = "";
     let todos: Array<{text: string, completed: boolean, id: number}> = []
+    let text: string = "";
+
+    // will be called every time any variable in here changes
+    // $: {
+    //     tsvscode.setState({text});
+    // }
         // gets run when panel first gets mounted, good place to add listeners
     
         async function addTodo(t: string) {

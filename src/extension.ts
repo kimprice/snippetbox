@@ -30,7 +30,6 @@ export function activate(context: vscode.ExtensionContext) {
 	// });
 
 	// context.subscriptions.push(disposable);
-
 	const sidebarProvider = new SidebarProvider(context.extensionUri);
 
 	const item = vscode.window.createStatusBarItem(
