@@ -87,8 +87,8 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetbox.refresh', async () => {
 			// uncomment below when working on webview panel
-			// HelloWorldPanel.kill();
-			// HelloWorldPanel.createOrShow(context.extensionUri);
+			HelloWorldPanel.kill();
+			HelloWorldPanel.createOrShow(context.extensionUri);
 			setTimeout(() => {
 				vscode.commands.executeCommand("workbench.action.webview.openDeveloperTools");
 			}, 500);
