@@ -3,3 +3,7 @@ export type User = {
     name: string;
     githubId: string;
 };
+
+export type State = 
+    | {page: "todos"; text: string;}
+    | {page: "contact"};

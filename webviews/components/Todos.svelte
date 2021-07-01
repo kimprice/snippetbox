@@ -1,17 +1,19 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { User } from "../types";
-    
+    import type { User, State } from "../types";
+    import { apiBaseUrl } from "../../src/constants";
     export let user: User;
     export let accessToken: string;
-    // let text = "";
     let todos: Array<{text: string, completed: boolean, id: number}> = []
-    let text: string = "";
+    export let text: string;
 
     // will be called every time any variable in here changes
-    // $: {
-    //     tsvscode.setState({text});
-    // }
+    $: {
+        tsvscode.setState({
+          page: 'todos',
+          text: text,
+        });
+    }
         // gets run when panel first gets mounted, good place to add listeners
     
         async function addTodo(t: string) {
