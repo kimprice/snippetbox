@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { User, State } from "../types";
+    import type { User } from "../types";
     import { apiBaseUrl } from "../../src/constants";
     export let user: User;
     export let accessToken: string;

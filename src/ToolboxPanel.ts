@@ -1,13 +1,13 @@
 import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
 
-export class HelloWorldPanel {
+export class ToolboxPanel {
   /**
    * Track the currently panel. Only allow a single panel to exist at a time.
    */
-  public static currentPanel: HelloWorldPanel | undefined;
+  public static currentPanel: ToolboxPanel | undefined;
 
-  public static readonly viewType = "hello-world";
+  public static readonly viewType = "toolbox";
 
   private readonly _panel: vscode.WebviewPanel;
   private readonly _extensionUri: vscode.Uri;
@@ -18,18 +18,23 @@ export class HelloWorldPanel {
       ? vscode.window.activeTextEditor.viewColumn
       : undefined;
 
+      // this has to do with vertical change
+      // vscode.window.onDidChangeTextEditorVisibleRanges((e)=>{
+      //   console.log(`Visible range changed: ${e} `);
+      // });
+
     // If we already have a panel, show it.
-    if (HelloWorldPanel.currentPanel) {
-      HelloWorldPanel.currentPanel._panel.reveal(column);
-      HelloWorldPanel.currentPanel._update();
+    if (ToolboxPanel.currentPanel) {
+      ToolboxPanel.currentPanel._panel.reveal(column);
+      ToolboxPanel.currentPanel._update();
       return;
     }
 
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
-      HelloWorldPanel.viewType,
-      "VSinder",
-      column || vscode.ViewColumn.One,
+      ToolboxPanel.viewType,
+      "Toolbox",
+      vscode.ViewColumn.Two,
       {
         // Enable javascript in the webview
         enableScripts: true,
@@ -42,16 +47,16 @@ export class HelloWorldPanel {
       }
     );
 
-    HelloWorldPanel.currentPanel = new HelloWorldPanel(panel, extensionUri);
+    ToolboxPanel.currentPanel = new ToolboxPanel(panel, extensionUri);
   }
 
   public static kill() {
-    HelloWorldPanel.currentPanel?.dispose();
-    HelloWorldPanel.currentPanel = undefined;
+    ToolboxPanel.currentPanel?.dispose();
+    ToolboxPanel.currentPanel = undefined;
   }
 
   public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
-    HelloWorldPanel.currentPanel = new HelloWorldPanel(panel, extensionUri);
+    ToolboxPanel.currentPanel = new ToolboxPanel(panel, extensionUri);
   }
 
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
@@ -80,7 +85,7 @@ export class HelloWorldPanel {
   }
 
   public dispose() {
-    HelloWorldPanel.currentPanel = undefined;
+    ToolboxPanel.currentPanel = undefined;
 
     // Clean up our resources
     this._panel.dispose();
