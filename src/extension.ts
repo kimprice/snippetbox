@@ -56,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetbox.authenticate', () => {
 			try {
-				authenticate();
+				authenticate(() => {});
 			} catch (err) {
 				console.log(err);
 			}
