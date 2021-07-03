@@ -11,7 +11,7 @@
 	],
 	"activationEvents": [
 		"onCommand:snippetbox.open",
-		"onCommand:snippetbox.helloWorld",
+		"onCommand:snippetbox.toolbox",
 		"onCommand:snippetbox.refresh",
 		"onCommand:snippetbox.add",
 		"onCommand:snippetbox.authenticate",

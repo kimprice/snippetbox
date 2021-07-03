@@ -3,7 +3,7 @@ import { getNonce } from "./getNonce";
 
 export class ToolboxPanel {
   /**
-   * Track the currently panel. Only allow a single panel to exist at a time.
+   * Track the current panel. Only allow a single panel to exist at a time.
    */
   public static currentPanel: ToolboxPanel | undefined;
 
@@ -130,7 +130,7 @@ export class ToolboxPanel {
   private _getHtmlForWebview(webview: vscode.Webview) {
     // // And the uri we use to load this script in the webview
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "out/compiled", "HelloWorld.js")
+      vscode.Uri.joinPath(this._extensionUri, "out/compiled", "Toolbox.js")
     );
 
     // // Uri to load styles into webview
