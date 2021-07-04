@@ -1,9 +1,9 @@
 <script lang="ts">
     // import { onMount } from "svelte";
     // import type { User, Ref } from "../types";
-    import type { Ref } from "../../src/references";
+    import type { Ref } from "../references";
     // import  { apiBaseUrl } from "../../src/constants";
-    import { REFERENCES } from "../../src/references";
+    import { REFERENCES } from "../references";
     // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
     // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
     let text: string = "";
@@ -32,10 +32,17 @@
     //                 refs = [ref, ...refs];
     //         return
     //     }
-
+    
     function searchRefs(searchString: string) {
-        let keywords: string[] = searchString.split(" ");
-        // TODO add logic for which references to show
+      // clean text
+      console.log(`searchString: ${searchString}`);   
+      let keywords = searchString
+        .toLowerCase()
+        .replace(/[.,\/#!$%\^&\*;:{}@=\-_`~()]/g,"")
+        .split(" ");
+      console.log(`keywords ${keywords}`);
+      // TODO add logic for which references to show
+
         return searchResults;
     }
 
@@ -70,8 +77,8 @@
 <form
   on:submit|preventDefault={async () => {
     // todos = [{text, completed: false}, ...todos]
-    // searchRefs(text); // this will update searchResults
-    console.log(text);
+    searchRefs(text); // this will update searchResults
+    // console.log(text);
     text = "";
   }}
 >
