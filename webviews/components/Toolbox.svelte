@@ -1,12 +1,13 @@
 <script lang="ts">
     // import { onMount } from "svelte";
     // import type { User, Ref } from "../types";
-    // import type { Ref } from "../../src/references";
+    import type { Ref } from "../../src/references";
     // import  { apiBaseUrl } from "../../src/constants";
-    // import  { REFERENCES } from "../../src/references";
+    import { REFERENCES } from "../../src/references";
     // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
-    let text: string;
-    // let searchResults: Ref[] = REFERENCES;
+    // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
+    let text: string = "";
+    let searchResults: Array<Ref> = REFERENCES;
 
     // will be called every time any variable in here changes
     // $: {
@@ -32,11 +33,11 @@
     //         return
     //     }
 
-    // function searchRefs(searchString: string) {
-        // let keywords: string[] = searchString.split(" ");
+    function searchRefs(searchString: string) {
+        let keywords: string[] = searchString.split(" ");
         // TODO add logic for which references to show
-        // return searchResults;
-    // }
+        return searchResults;
+    }
 
     // gets run when panel first gets mounted, good place to add listeners
     // onMount(async () => {
@@ -76,3 +77,21 @@
 >
   <input bind:value={text} />
 </form>
+<h1>{text}</h1>
+
+{#each searchResults as result}
+  <div>
+    {#if result.open}
+      <h3 on:click={()=> {
+        result.open=false;
+      }}>v  {result.sourceName}</h3>
+      <a href={result.sourceLink}>Open Link in Browser</a>
+      <p>{result.infoToDisplay}</p>
+    {:else}
+      <h3 on:click={()=> {
+        result.open=true;
+      }}>>  {result.sourceName}</h3>
+    {/if}
+  </div>
+{/each}
+
