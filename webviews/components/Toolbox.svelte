@@ -41,9 +41,17 @@
         .replace(/[.,\/#!$%\^&\*;:{}@=\-_`~()]/g,"")
         .split(" ");
       console.log(`keywords ${keywords}`);
-      // TODO add logic for which references to show
-
-        return searchResults;
+      searchResults = [];
+      for (let i = 0; i<keywords.length; i++) {
+        for (let j = 0; j<REFERENCES.length; j++) {
+          if (REFERENCES[j].keywords.includes(keywords[i])) {
+            searchResults.push(REFERENCES[j]);
+            break;
+          }
+        }
+      }
+      console.log(`search results: ${searchResults}`);
+      return searchResults;
     }
 
     // gets run when panel first gets mounted, good place to add listeners

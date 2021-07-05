@@ -14,7 +14,7 @@ const ref1: Ref = {
     ASCII values for a-z are 97-122 \n
     ASCII values for 0-9 are 48-57 \n
     `,
-    keywords: ["ASCII", "table", "value"],
+    keywords: ["ascii", "table", "value"],
     open: false,
 };
 const ref2: Ref = {
@@ -37,7 +37,7 @@ const ref3: Ref = {
     import java.util.regex.Matcher; \n
     import java.util.regex.Pattern; \n
     `,
-    keywords: ["Regular Expressions", "regex", "match"],
+    keywords: ["regular", "expression", "regex", "match"],
     open: false,
 };
 export const REFERENCES: Array<Ref> = [ref1, ref2, ref3];
