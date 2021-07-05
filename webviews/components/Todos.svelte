@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { User, State } from "../types";
+    import type { User } from "../types";
     import { apiBaseUrl } from "../../src/constants";
     export let user: User;
     export let accessToken: string;
@@ -14,7 +14,6 @@
           text: text,
         });
     }
-        // gets run when panel first gets mounted, good place to add listeners
     
         async function addTodo(t: string) {
             const response = await fetch(`${apiBaseUrl}/todo`, {
@@ -32,6 +31,7 @@
             return
         }
     
+    // gets run when panel first gets mounted, good place to add listeners
     onMount(async () => {
         window.addEventListener("message", async (event) => {
             const message = event.data; // The json data that the extension sent

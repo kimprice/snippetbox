@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { HelloWorldPanel } from './HelloWorldPanel';
+import { ToolboxPanel } from './ToolboxPanel';
 import { SidebarProvider } from './SidebarProvider';
 import { authenticate } from './authenticate';
 import { TokenManager } from './TokenManager';
@@ -48,15 +48,15 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 	
 	context.subscriptions.push(
-		vscode.commands.registerCommand('snippetbox.helloWorld', () => {
-			HelloWorldPanel.createOrShow(context.extensionUri);
+		vscode.commands.registerCommand('snippetbox.toolbox', () => {
+			ToolboxPanel.createOrShow(context.extensionUri);
 		})
 	);
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetbox.authenticate', () => {
 			try {
-				authenticate();
+				authenticate(() => {});
 			} catch (err) {
 				console.log(err);
 			}

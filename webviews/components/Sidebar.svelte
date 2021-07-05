@@ -54,6 +54,9 @@ import Todos from "./Todos.svelte";
             lastState.text = text;
             console.log(`clicked contact-after, state page: ${state.page}`);
         }}>go to contact</button>
+        <button on:click={() => {
+            tsvscode.postMessage({type: 'toolbox', value: undefined});
+        }}>Open Toolbox</button>
     {:else}
         <a href="https://scholar.google.com/citations?user=AVSNW8gAAAAJ&hl=en&oi=ao">Google Scholar Page</a>
         <button on:click={() => {

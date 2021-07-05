@@ -11,7 +11,7 @@
 	],
 	"activationEvents": [
 		"onCommand:snippetbox.open",
-		"onCommand:snippetbox.helloWorld",
+		"onCommand:snippetbox.toolbox",
 		"onCommand:snippetbox.refresh",
 		"onCommand:snippetbox.add",
 		"onCommand:snippetbox.authenticate",
@@ -46,9 +46,9 @@
 				"title": "SnippetBox"
 			},
 			{
-				"command": "snippetbox.helloWorld",
+				"command": "snippetbox.toolbox",
 				"category": "Adaptive Tool",
-				"title": "HelloWorld"
+				"title": "Toolbox"
 			},
 			{
 				"command": "snippetbox.refresh",
