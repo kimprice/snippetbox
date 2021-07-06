@@ -54,6 +54,7 @@ import Todos from "./Todos.svelte";
             lastState.text = text;
             console.log(`clicked contact-after, state page: ${state.page}`);
         }}>go to contact</button>
+        <!-- svelte-ignore missing-declaration -->
         <button on:click={() => {
             tsvscode.postMessage({type: 'toolbox', value: undefined});
         }}>Open Toolbox</button>
@@ -68,12 +69,14 @@ import Todos from "./Todos.svelte";
             console.log(`clicked back-after, state page: ${state.page}`);
         }}>go back</button>
     {/if}
+    <!-- svelte-ignore missing-declaration -->
     <button on:click={() => {
         accessToken='';
         user = null;
         tsvscode.postMessage({type: 'logout', value: undefined});
     }}>logout</button>
 {:else}
+    <!-- svelte-ignore missing-declaration -->
     <button on:click={() => {
         tsvscode.postMessage({type: 'authenticate', value: undefined});
     }}>login with GitHub</button>
