@@ -3,3 +3,5 @@ dist
 node_modules
 .vscode-test/
 *.vsix
+speechrecext-85e9d5abb603.json
+src/private.ts
