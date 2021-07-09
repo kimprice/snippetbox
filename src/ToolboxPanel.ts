@@ -104,6 +104,14 @@ export class ToolboxPanel {
     this._panel.webview.html = this._getHtmlForWebview(webview);
     webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
+        case "startListen": {
+          vscode.commands.executeCommand("snippetbox.listen");
+          break;
+        }
+        case "stopListen": {
+          vscode.commands.executeCommand("snippetbox.stopListen");
+          break;
+        }
         case "onInfo": {
           if (!data.value) {
             return;
@@ -164,7 +172,9 @@ export class ToolboxPanel {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="${stylesResetUri}" rel="stylesheet">
         <link href="${stylesMainUri}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script nonce="${nonce}">
+          const tsvscode = acquireVsCodeApi();
         </script>
 			</head>
       <body>
