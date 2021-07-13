@@ -63,8 +63,9 @@
                 case "new-ref":
                     // saveRef(message.value);
                     break;
-                case "keywords": //or maybe "wordsDetected"
+                case "transcript": //or maybe "wordsDetected"
                   // search through Refs with keywords
+                  // console.log(`received on svelte side transcript: ${message.value}`)
                   break;
             }
 

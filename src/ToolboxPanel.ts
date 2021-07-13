@@ -59,6 +59,10 @@ export class ToolboxPanel {
     ToolboxPanel.currentPanel = new ToolboxPanel(panel, extensionUri);
   }
 
+  public static getPanelWebview() {
+    return ToolboxPanel.currentPanel?._panel.webview;
+  }
+
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     this._panel = panel;
     this._extensionUri = extensionUri;
