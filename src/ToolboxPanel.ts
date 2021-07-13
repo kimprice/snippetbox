@@ -167,12 +167,10 @@ export class ToolboxPanel {
 					and only allow scripts that have a specific nonce.
         -->
         <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${
-      webview.cspSource
-    };'nonce-${nonce}';">
+      webview.cspSource}; script-src 'nonce-${nonce}';">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="${stylesResetUri}" rel="stylesheet">
         <link href="${stylesMainUri}" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script nonce="${nonce}">
           const tsvscode = acquireVsCodeApi();
         </script>
