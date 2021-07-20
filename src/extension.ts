@@ -7,6 +7,7 @@ import { ToolboxPanel } from './ToolboxPanel';
 import { SidebarProvider } from './SidebarProvider';
 import { authenticate } from './authenticate';
 import { TokenManager } from './TokenManager';
+import { SpeechClient } from './SpeechClient';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -126,6 +127,30 @@ export function activate(context: vscode.ExtensionContext) {
 			
 		})
 	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('snippetbox.listen', async () => {
+			try {
+				await SpeechClient.startSpeechRecognition();
+			} catch (err) {
+				console.log(err);
+			}
+			
+		})
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('snippetbox.stopListen', async () => {
+			try {
+				await SpeechClient.stopSpeechRecognition();
+			} catch (err) {
+				console.log(err);
+			}
+			
+		})
+	);
+
+	// SpeechClient.startSpeechRecognition();
 }
 
 
