@@ -142,7 +142,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetbox.stopListen', async () => {
 			try {
-				await SpeechClient.stopSpeechRecognition();
+				SpeechClient.stopSpeechRecognition();
 			} catch (err) {
 				console.log(err);
 			}
