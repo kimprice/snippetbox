@@ -6,7 +6,6 @@
     import { REFERENCES } from "../references";
     import Icons from "./Icons.svelte";
     import { microphone, heart, bellIcon, book } from "../svgIcons";
-    import MicrophoneIcon from "./MicrophoneIcon.svelte";
     // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
     // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
     let text: string = "";
@@ -96,7 +95,6 @@
 </style>
 
 <!-- TODO: Call this {user.name view}, add tooltip -->
-<div>Private view</div>
 <!-- click microphone icon to turn listening on/off, send message -->
 
 <!-- <i class="fas fa-microphone fa-lg mr-2" on:click={()=>{
@@ -104,20 +102,20 @@
 }}></i> -->
 <div>
   {#if listening}
-        <h3>Listening...</h3>
-        <h3 on:click={()=> {
+        <h3>Listening is</h3>
+        <button on:click={()=> {
           // send message to extension
           tsvscode.postMessage({type: 'stopListen', value: undefined});
           listening = false; // might want to do this after getting confirmation?
-        }}>[icon]</h3>
+        }}>ON</button>
     
   {:else}
-    <h3>Listening is off</h3>
-    <h3 on:click={()=> {
+    <h3>Listening is</h3>
+    <button on:click={()=> {
       // send message to extension
       tsvscode.postMessage({type: 'startListen', value: undefined});
       listening = true;
-    }}><Icons d={book} /></h3>
+    }}>OFF</button>
   {/if}
 </div>
 
