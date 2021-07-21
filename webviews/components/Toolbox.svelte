@@ -4,6 +4,9 @@
     import type { Ref } from "../references";
     // import  { apiBaseUrl } from "../../src/constants";
     import { REFERENCES } from "../references";
+    import Icons from "./Icons.svelte";
+    import { microphone, heart, bellIcon, book } from "../svgIcons";
+    import MicrophoneIcon from "./MicrophoneIcon.svelte";
     // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
     // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
     let text: string = "";
@@ -102,7 +105,6 @@
 <div>
   {#if listening}
         <h3>Listening...</h3>
-        <i class="fas fa-microphone fa-lg mr-2" ></i>
         <h3 on:click={()=> {
           // send message to extension
           tsvscode.postMessage({type: 'stopListen', value: undefined});
@@ -115,7 +117,7 @@
       // send message to extension
       tsvscode.postMessage({type: 'startListen', value: undefined});
       listening = true;
-    }}>[icon]</h3>
+    }}><Icons d={book} /></h3>
   {/if}
 </div>
 
