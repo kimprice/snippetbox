@@ -97,7 +97,7 @@ export class SpeechClient {
         return;
       }
       recognizeStream.end();
-      recognizeStream.removeListener('data', (data: any) =>
+      recognizeStream.removeListener('data', (data: any) => // is this the right way to remove the listener?
         process.stdout.write(
           data.results[0] && data.results[0].alternatives[0]
             ? `Transcription: ${data.results[0].alternatives[0].transcript}\n`

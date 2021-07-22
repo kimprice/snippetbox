@@ -26,7 +26,7 @@ const ref2: Ref = {
     isUpperCase(char ch) \n
     Determines if the specified character is an uppercase character, returns a boolean. \n
     `,
-    keywords: ["character", "digit", "letter"],
+    keywords: ["character", "digit", "letter", "char"],
     open: false,
 };
 

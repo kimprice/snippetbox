@@ -4,6 +4,8 @@
     import type { Ref } from "../references";
     // import  { apiBaseUrl } from "../../src/constants";
     import { REFERENCES } from "../references";
+    import Icons from "./Icons.svelte";
+    import { microphone, heart, bellIcon, book } from "../svgIcons";
     // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
     // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
     let text: string = "";
@@ -65,7 +67,8 @@
                     break;
                 case "transcript": //or maybe "wordsDetected"
                   // search through Refs with keywords
-                  // console.log(`received on svelte side transcript: ${message.value}`)
+                  console.log(`received on svelte side transcript: ${message.value}`)
+                  searchRefs(message.value);
                   break;
             }
 
@@ -85,30 +88,36 @@
 
 </script>
 
+<style>
+  h3 {
+    display: inline-block;
+  }
+</style>
+
 <!-- TODO: Call this {user.name view}, add tooltip -->
-<div>Private view</div>
 <!-- click microphone icon to turn listening on/off, send message -->
 
 <!-- <i class="fas fa-microphone fa-lg mr-2" on:click={()=>{
 
 }}></i> -->
-{#if listening}
-  <div>
-      <h3>Listening...</h3>
-      <h3 on:click={()=> {
-        // send message to extension
-        tsvscode.postMessage({type: 'stopListen', value: undefined});
-        listening = false; // might want to do this after getting confirmation?
-      }}>[icon]</h3>
-  </div>
-{:else}
-  <h3>Listening is off</h3>
-  <h3 on:click={()=> {
-    // send message to extension
-    tsvscode.postMessage({type: 'startListen', value: undefined});
-    listening = true;
-  }}>[icon]</h3>
-{/if}
+<div>
+  {#if listening}
+        <h3>Listening is</h3>
+        <button on:click={()=> {
+          // send message to extension
+          tsvscode.postMessage({type: 'stopListen', value: undefined});
+          listening = false; // might want to do this after getting confirmation?
+        }}>ON</button>
+    
+  {:else}
+    <h3>Listening is</h3>
+    <button on:click={()=> {
+      // send message to extension
+      tsvscode.postMessage({type: 'startListen', value: undefined});
+      listening = true;
+    }}>OFF</button>
+  {/if}
+</div>
 
 <form
   on:submit|preventDefault={async () => {
