@@ -1,16 +1,20 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    // import type { User, Ref } from "../types";
-    import type { Ref } from "../references";
-    // import  { apiBaseUrl } from "../../src/constants";
-    import { REFERENCES } from "../references";
-    import Icons from "./Icons.svelte";
-    import { microphone, heart, bellIcon, book } from "../svgIcons";
-    // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
-    // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
-    let text: string = "";
-    let searchResults: Array<Ref> = REFERENCES;
-    let listening: boolean = false;
+  import { onMount } from "svelte";
+  // import type { User, Ref } from "../types";
+  import type { Ref } from "../references";
+  // import  { apiBaseUrl } from "../../src/constants";
+  import { REFERENCES } from "../references";
+  import Icons from "./Icons.svelte";
+  import { microphone, heart, bellIcon, book, trash } from "../svgIcons";
+  import TrashIcon from "./TrashIcon.svelte";
+  import LinkIcon from "./LinkIcon.svelte";
+import ChevronDownIcon from "./ChevronDownIcon.svelte";
+import ChevronRightIcon from "./ChevronRightIcon.svelte";
+  // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
+  // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
+  let text: string = "";
+  let searchResults: Array<Ref> = REFERENCES;
+  let listening: boolean = false;
 
     // will be called every time any variable in here changes
     // $: {
@@ -92,6 +96,9 @@
   h3 {
     display: inline-block;
   }
+  a {
+    color: currentColor;
+  }
 </style>
 
 <!-- TODO: Call this {user.name view}, add tooltip -->
@@ -127,22 +134,24 @@
     text = "";
   }}
 >
-  <input bind:value={text} />
+  <input placeholder="Search References" bind:value={text} />
 </form>
-<h1>{text}</h1>
 
 {#each searchResults as result}
   <div>
     {#if result.open}
       <h3 on:click={()=> {
         result.open=false;
-      }}>v  {result.sourceName}</h3>
-      <a href={result.sourceLink}>Open Link in Browser</a>
-      <p>{result.infoToDisplay}</p>
+      }}><ChevronDownIcon /> {result.sourceName}</h3> 
+      <a href={result.sourceLink}><LinkIcon/></a> <TrashIcon/>
+      {#each result.infoToDisplay as info}
+      <p>{info}</p>
+      {/each}
     {:else}
       <h3 on:click={()=> {
         result.open=true;
-      }}>>  {result.sourceName}</h3>
+      }}><ChevronRightIcon /> {result.sourceName}</h3>
+      <a href={result.sourceLink}><LinkIcon/></a> <TrashIcon/>
     {/if}
   </div>
 {/each}
