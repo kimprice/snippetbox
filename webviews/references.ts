@@ -31,9 +31,10 @@ const ref2: Ref = {
 };
 
 const ref3: Ref = {
-    sourceName: "Regular Expressions (Regex)",
+    sourceName: "Regular Expressions",
     sourceLink: "https://www.w3schools.com/java/java_regex.asp#:~:text=Metacharacters%20are%20characters%20with%20a%20special%20meaning%3A%20,string%20a%20...%20%204%20more%20rows%20",
     infoToDisplay: [
+    "Regex",
     "import java.util.regex.Matcher;",
     "import java.util.regex.Pattern;"
     ],

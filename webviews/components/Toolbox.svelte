@@ -10,6 +10,8 @@
   import LinkIcon from "./LinkIcon.svelte";
 import ChevronDownIcon from "./ChevronDownIcon.svelte";
 import ChevronRightIcon from "./ChevronRightIcon.svelte";
+import BookmarkIcon from "./BookmarkIcon.svelte";
+import SearchIcon from "./SearchIcon.svelte";
   // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
   // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
   let text: string = "";
@@ -95,10 +97,25 @@ import ChevronRightIcon from "./ChevronRightIcon.svelte";
 <style>
   h3 {
     display: inline-block;
+    cursor: hand;
   }
+
   a {
     color: currentColor;
   }
+
+  .info {
+    padding-left: 20px;
+  }
+
+  /* .list {
+    display: grid;
+  } */
+
+  .iconGroup {
+    float: right;
+  }
+
 </style>
 
 <!-- TODO: Call this {user.name view}, add tooltip -->
@@ -124,6 +141,9 @@ import ChevronRightIcon from "./ChevronRightIcon.svelte";
       listening = true;
     }}>OFF</button>
   {/if}
+  <div class="iconGroup">
+    <SearchIcon /> <BookmarkIcon />
+  </div>
 </div>
 
 <form
@@ -138,20 +158,20 @@ import ChevronRightIcon from "./ChevronRightIcon.svelte";
 </form>
 
 {#each searchResults as result}
-  <div>
+  <div class="list">
     {#if result.open}
       <h3 on:click={()=> {
         result.open=false;
-      }}><ChevronDownIcon /> {result.sourceName}</h3> 
-      <a href={result.sourceLink}><LinkIcon/></a> <TrashIcon/>
+      }}><ChevronDownIcon /></h3><h3>{result.sourceName}</h3> 
+      <div class="iconGroup"><a href={result.sourceLink}><LinkIcon/></a> <BookmarkIcon/> <TrashIcon/></div>
       {#each result.infoToDisplay as info}
-      <p>{info}</p>
+      <p class="info">{info}</p>
       {/each}
     {:else}
       <h3 on:click={()=> {
         result.open=true;
-      }}><ChevronRightIcon /> {result.sourceName}</h3>
-      <a href={result.sourceLink}><LinkIcon/></a> <TrashIcon/>
+      }}><ChevronRightIcon /></h3><h3>{result.sourceName}</h3>
+      <div class="iconGroup"><a href={result.sourceLink}><LinkIcon/></a> <BookmarkIcon/> <TrashIcon/></div>
     {/if}
   </div>
 {/each}
