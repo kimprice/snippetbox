@@ -12,6 +12,7 @@ import ChevronDownIcon from "./ChevronDownIcon.svelte";
 import ChevronRightIcon from "./ChevronRightIcon.svelte";
 import BookmarkIcon from "./BookmarkIcon.svelte";
 import SearchIcon from "./SearchIcon.svelte";
+import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
   // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
   // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
   let text: string = "";
@@ -142,7 +143,7 @@ import SearchIcon from "./SearchIcon.svelte";
     }}>OFF</button>
   {/if}
   <div class="iconGroup">
-    <SearchIcon /> <BookmarkIcon />
+    <SearchIcon /> <LargeBookmarkIcon />
   </div>
 </div>
 
