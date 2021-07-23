@@ -5,3 +5,4 @@ node_modules
 *.vsix
 speechrecext-85e9d5abb603.json
 src/private.ts
+.DS_Store

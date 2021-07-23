@@ -151,6 +151,15 @@
     padding: 0px .5px;
   }
 
+  .chevron {
+    background-color: var(--vscode-editor-background);
+    padding: 0px;
+  }
+
+  *:focus {
+    outline: 0px;
+  }
+
   /* .selected {
     border-bottom: 1px solid currentColor;
   } */
@@ -197,19 +206,24 @@
   </form>
   {#each manualResults as result}
     <div class="list">
-      {#if result.isOpen()}
-        <h3 on:click={()=> {
+      
+        <button class="chevron" on:click={()=> {
           result.toggleOpenOrClose();
           result = result; // need assignment to trigger rerender of svelte component
-        }}><ChevronDownIcon /></h3>
-      {:else}
-        <h3 on:click={()=> {
-          result.toggleOpenOrClose();
-          result = result;
-        }}><ChevronRightIcon /></h3>
-      {/if}
+        }}>
+          {#if result.isOpen()}
+            <ChevronDownIcon />
+          {:else}
+            <ChevronRightIcon />
+          {/if}
+      </button>
+      
         <h3>{result.getSourceName()}</h3>
-        <div class="iconGroup"><button><a href={result.getSourceLink()}><LinkIcon/></a></button><button><BookmarkIcon/></button><button><TrashIcon/></button></div>
+        <div class="iconGroup">
+          <button><a href={result.getSourceLink()}><LinkIcon/></a></button>
+          <button><BookmarkIcon/></button>
+          <button><TrashIcon/></button>
+        </div>
       {#if result.isOpen()}
         {#each result.getInfoToDisplay() as info}
         <p class="info">{info}</p>
