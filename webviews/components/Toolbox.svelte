@@ -3,20 +3,21 @@
   // import type { User, Ref } from "../types";
   import type { Ref } from "../references";
   // import  { apiBaseUrl } from "../../src/constants";
-  import { REFERENCES } from "../references";
+  import { references } from "../references";
   import Icons from "./Icons.svelte";
   import { microphone, heart, bellIcon, book, trash } from "../svgIcons";
   import TrashIcon from "./TrashIcon.svelte";
   import LinkIcon from "./LinkIcon.svelte";
-import ChevronDownIcon from "./ChevronDownIcon.svelte";
-import ChevronRightIcon from "./ChevronRightIcon.svelte";
-import BookmarkIcon from "./BookmarkIcon.svelte";
-import SearchIcon from "./SearchIcon.svelte";
-import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
+  import ChevronDownIcon from "./ChevronDownIcon.svelte";
+  import ChevronRightIcon from "./ChevronRightIcon.svelte";
+  import BookmarkIcon from "./BookmarkIcon.svelte";
+  import SearchIcon from "./SearchIcon.svelte";
+  import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
   // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
   // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
   let text: string = "";
-  let searchResults: Array<Ref> = REFERENCES;
+  let searchResults: Array<Ref> = references;
+  let listenResults: Array<Ref>;
   let listening: boolean = false;
   let isSearchPage: boolean = true;
     // will be called every time any variable in here changes
@@ -43,7 +44,7 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
     //         return
     //     }
     
-    function searchRefs(searchString: string) {
+    function searchRefs(searchString: string, manualSearch: boolean = true) {
       // clean text
       console.log(`searchString: ${searchString}`);   
       let keywords = searchString
@@ -53,9 +54,9 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
       console.log(`keywords ${keywords}`);
       searchResults = [];
       for (let i = 0; i<keywords.length; i++) {
-        for (let j = 0; j<REFERENCES.length; j++) {
-          if (REFERENCES[j].keywords.includes(keywords[i])) {
-            searchResults.push(REFERENCES[j]);
+        for (let j = 0; j<references.length; j++) {
+          if (references[j].keywords.includes(keywords[i])) {
+            searchResults.push(references[j]);
             break;
           }
         }
@@ -99,6 +100,7 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
   h3 {
     display: inline-block;
     cursor: hand;
+    margin: 1px;
   }
 
   a {
@@ -118,8 +120,26 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
     display: grid;
   } */
 
+  .menuGroup {
+    float: right;
+  }
+
+  .menuGroup > button {
+    background-color: var(--vscode-editor-background);
+    padding: 0.5px;
+    margin: 0px 0.5px;
+  }
+
+  .menuGroup > button:hover {
+    border-bottom: 2px solid var(--vscode-input-placeholderForeground);
+  }
+
   .iconGroup {
     float: right;
+  }
+
+  .iconGroup > button {
+    padding: 0px .5px;
   }
 
   /* .selected {
@@ -144,14 +164,14 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
     }}>ON</button>
     
   {:else}
-    <button on:click={()=> {
+    <button title="Turn on for suggested references" on:click={()=> {
       // send message to extension
       tsvscode.postMessage({type: 'startListen', value: undefined});
       listening = true;
     }}>OFF</button>
   {/if}
-  <div class="iconGroup">
-    <SearchIcon /> <LargeBookmarkIcon />
+  <div class="menuGroup">
+    <button><SearchIcon /> </button> <button> <LargeBookmarkIcon /> </button>
   </div>
 </div>
 
@@ -164,7 +184,7 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
       text = "";
     }}
   >
-    <input placeholder="Search References" bind:value={text} />
+    <input placeholder="Search references" bind:value={text} />
   </form>
   {#each searchResults as result}
     <div class="list">
@@ -172,7 +192,7 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
         <h3 on:click={()=> {
           result.open=false;
         }}><ChevronDownIcon /></h3><h3>{result.sourceName}</h3>
-        <div class="iconGroup"><a href={result.sourceLink}><LinkIcon/></a> <BookmarkIcon/> <TrashIcon/></div>
+        <div class="iconGroup"><button><a href={result.sourceLink}><LinkIcon/></a></button><button><BookmarkIcon/></button><button><TrashIcon/></button></div>
         {#each result.infoToDisplay as info}
         <p class="info">{info}</p>
         {/each}
@@ -180,9 +200,16 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
         <h3 on:click={()=> {
           result.open=true;
         }}><ChevronRightIcon /></h3><h3>{result.sourceName}</h3>
-        <div class="iconGroup"><a href={result.sourceLink}><LinkIcon/></a> <BookmarkIcon/> <TrashIcon/></div>
+        <div class="iconGroup"><button><a href={result.sourceLink}><LinkIcon/></a></button><button><BookmarkIcon/></button><button><TrashIcon/></button></div>
       {/if}
     </div>
   {/each}
+</div>
+
+<div class="listenGroup">
+  {#if listening}
+    <h3>Suggested references:</h3>
+
+  {/if}
 </div>
 

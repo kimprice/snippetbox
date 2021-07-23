@@ -1,12 +1,16 @@
 export type Ref = {
+    id: number;
     sourceName: string;
     sourceLink: string;
     infoToDisplay: string[];
     keywords: string[];
     open: boolean;
+    saved: boolean;
     example?: string;
 };
-const ref1: Ref = {
+let id = 1;
+let ref1: Ref = {
+    id: id++,
     sourceName: "ASCII Table",
     sourceLink: "http://www.asciitable.com/",
     infoToDisplay: [
@@ -16,8 +20,10 @@ const ref1: Ref = {
     ],
     keywords: ["ascii", "table", "value"],
     open: false,
+    saved: false,
 };
-const ref2: Ref = {
+let ref2: Ref = {
+    id: id++,
     sourceName: "Character Methods",
     sourceLink: "https://docs.oracle.com/javase/7/docs/api/java/lang/Character.html",
     infoToDisplay: [
@@ -28,9 +34,11 @@ const ref2: Ref = {
     ],
     keywords: ["character", "digit", "letter", "char"],
     open: false,
+    saved: false,
 };
 
-const ref3: Ref = {
+let ref3: Ref = {
+    id: id++,
     sourceName: "Regular Expressions",
     sourceLink: "https://www.w3schools.com/java/java_regex.asp#:~:text=Metacharacters%20are%20characters%20with%20a%20special%20meaning%3A%20,string%20a%20...%20%204%20more%20rows%20",
     infoToDisplay: [
@@ -40,5 +48,6 @@ const ref3: Ref = {
     ],
     keywords: ["regular", "expression", "regex", "match"],
     open: false,
+    saved: false,
 };
-export const REFERENCES: Array<Ref> = [ref1, ref2, ref3];
+export let references: Array<Ref> = [ref1, ref2, ref3];
