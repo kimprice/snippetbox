@@ -4,17 +4,13 @@
   import type { Ref } from "../references";
   // import  { apiBaseUrl } from "../../src/constants";
   import { references } from "../references";
-  import Icons from "./Icons.svelte";
-  import { microphone, heart, bellIcon, book, trash } from "../svgIcons";
-  import TrashIcon from "./TrashIcon.svelte";
-  import LinkIcon from "./LinkIcon.svelte";
-  import ChevronDownIcon from "./ChevronDownIcon.svelte";
-  import ChevronRightIcon from "./ChevronRightIcon.svelte";
-  import BookmarkIcon from "./BookmarkIcon.svelte";
-  import SearchIcon from "./SearchIcon.svelte";
-  import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
-  // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
-  // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
+  import TrashIcon from "./Icons/TrashIcon.svelte";
+  import LinkIcon from "./Icons/LinkIcon.svelte";
+  import ChevronDownIcon from "./Icons/ChevronDownIcon.svelte";
+  import ChevronRightIcon from "./Icons/ChevronRightIcon.svelte";
+  import BookmarkIcon from "./Icons/BookmarkIcon.svelte";
+  import SearchIcon from "./Icons/SearchIcon.svelte";
+  import LargeBookmarkIcon from "./Icons/LargeBookmarkIcon.svelte";
   let text: string = "";
   let manualResults: Array<Ref> = references;
   let listenResults: Array<Ref>;
@@ -175,6 +171,7 @@
 <div>
   <h3>Listening is</h3>
   {#if listening}
+    <!-- svelte-ignore missing-declaration -->
     <button on:click={()=> {
       // send message to extension
       tsvscode.postMessage({type: 'stopListen', value: undefined});
@@ -182,6 +179,7 @@
     }}>ON</button>
     
   {:else}
+    <!-- svelte-ignore missing-declaration -->
     <button title="Turn on for suggested references" on:click={()=> {
       // send message to extension
       tsvscode.postMessage({type: 'startListen', value: undefined});
