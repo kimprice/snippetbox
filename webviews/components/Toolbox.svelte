@@ -18,7 +18,7 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
   let text: string = "";
   let searchResults: Array<Ref> = REFERENCES;
   let listening: boolean = false;
-
+  let isSearchPage: boolean = true;
     // will be called every time any variable in here changes
     // $: {
         //Maybe searchResults should be here
@@ -109,6 +109,11 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
     padding-left: 20px;
   }
 
+  .searchGroup {
+    border-bottom: 1px solid var(--vscode-input-placeholderForeground);
+    padding-bottom: 0.5em;
+  }
+
   /* .list {
     display: grid;
   } */
@@ -116,6 +121,10 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
   .iconGroup {
     float: right;
   }
+
+  /* .selected {
+    border-bottom: 1px solid currentColor;
+  } */
 
 </style>
 
@@ -126,16 +135,15 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
 
 }}></i> -->
 <div>
+  <h3>Listening is</h3>
   {#if listening}
-        <h3>Listening is</h3>
-        <button on:click={()=> {
-          // send message to extension
-          tsvscode.postMessage({type: 'stopListen', value: undefined});
-          listening = false; // might want to do this after getting confirmation?
-        }}>ON</button>
+    <button on:click={()=> {
+      // send message to extension
+      tsvscode.postMessage({type: 'stopListen', value: undefined});
+      listening = false; // might want to do this after getting confirmation?
+    }}>ON</button>
     
   {:else}
-    <h3>Listening is</h3>
     <button on:click={()=> {
       // send message to extension
       tsvscode.postMessage({type: 'startListen', value: undefined});
@@ -147,33 +155,34 @@ import LargeBookmarkIcon from "./LargeBookmarkIcon.svelte";
   </div>
 </div>
 
-<form
-  on:submit|preventDefault={async () => {
-    // todos = [{text, completed: false}, ...todos]
-    searchRefs(text); // this will update searchResults
-    // console.log(text);
-    text = "";
-  }}
->
-  <input placeholder="Search References" bind:value={text} />
-</form>
-
-{#each searchResults as result}
-  <div class="list">
-    {#if result.open}
-      <h3 on:click={()=> {
-        result.open=false;
-      }}><ChevronDownIcon /></h3><h3>{result.sourceName}</h3> 
-      <div class="iconGroup"><a href={result.sourceLink}><LinkIcon/></a> <BookmarkIcon/> <TrashIcon/></div>
-      {#each result.infoToDisplay as info}
-      <p class="info">{info}</p>
-      {/each}
-    {:else}
-      <h3 on:click={()=> {
-        result.open=true;
-      }}><ChevronRightIcon /></h3><h3>{result.sourceName}</h3>
-      <div class="iconGroup"><a href={result.sourceLink}><LinkIcon/></a> <BookmarkIcon/> <TrashIcon/></div>
-    {/if}
-  </div>
-{/each}
+<div class="searchGroup">
+  <form
+    on:submit|preventDefault={async () => {
+      // todos = [{text, completed: false}, ...todos]
+      searchRefs(text); // this will update searchResults
+      // console.log(text);
+      text = "";
+    }}
+  >
+    <input placeholder="Search References" bind:value={text} />
+  </form>
+  {#each searchResults as result}
+    <div class="list">
+      {#if result.open}
+        <h3 on:click={()=> {
+          result.open=false;
+        }}><ChevronDownIcon /></h3><h3>{result.sourceName}</h3>
+        <div class="iconGroup"><a href={result.sourceLink}><LinkIcon/></a> <BookmarkIcon/> <TrashIcon/></div>
+        {#each result.infoToDisplay as info}
+        <p class="info">{info}</p>
+        {/each}
+      {:else}
+        <h3 on:click={()=> {
+          result.open=true;
+        }}><ChevronRightIcon /></h3><h3>{result.sourceName}</h3>
+        <div class="iconGroup"><a href={result.sourceLink}><LinkIcon/></a> <BookmarkIcon/> <TrashIcon/></div>
+      {/if}
+    </div>
+  {/each}
+</div>
 
