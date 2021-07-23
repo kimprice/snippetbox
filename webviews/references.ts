@@ -1,53 +1,98 @@
-export type Ref = {
-    id: number;
-    sourceName: string;
-    sourceLink: string;
-    infoToDisplay: string[];
-    keywords: string[];
-    open: boolean;
-    saved: boolean;
-    example?: string;
-};
-let id = 1;
-let ref1: Ref = {
-    id: id++,
-    sourceName: "ASCII Table",
-    sourceLink: "http://www.asciitable.com/",
-    infoToDisplay: [
+export class Ref {
+    private static numRefs: number = 0;
+    private id: number;
+    private sourceName: string;
+    private sourceLink: string;
+    private infoToDisplay: string[];
+    private keywords: string[];
+    private open: boolean = false;
+    private saved: boolean = false;
+    private example?: string;
+
+    public constructor (sourceName: string, sourceLink: string, infoToDisplay: string[], keywords: string[], example?: string) {
+        this.id = ++Ref.numRefs;
+        this.sourceName = sourceName;
+        this.sourceLink = sourceLink;
+        this.infoToDisplay = infoToDisplay;
+        this.keywords = keywords;
+        this.example = example;
+    }
+
+    public getId() {
+        return this.id;
+    }
+
+    public getSourceName() {
+        return this.sourceName;
+    }
+
+    public getSourceLink() {
+        return this.sourceLink;
+    }
+
+    public getInfoToDisplay() {
+        return this.infoToDisplay;
+    }
+
+    public getKeywords() {
+        return this.keywords;
+    }
+
+    public getExamples() {
+        return this.example;
+    }
+
+    public isOpen() {
+        return this.open;
+    }
+
+    public isSaved() {
+        return this.saved;
+    }
+
+    public toggleOpenOrClose(openStatus?: boolean) {
+        if (openStatus) { // specify open or closed
+            this.open = openStatus;
+        } else { // toggle
+            this.open = !this.open;
+        }
+    }
+
+    public toggleSaveStatus() {
+        this.saved = !this.saved;
+    }
+
+ };
+let ref1 = new Ref(
+    "ASCII Table",
+    "http://www.asciitable.com/",
+    [
     "ASCII values for A-Z are 65-90",
     "ASCII values for a-z are 97-122", 
     "ASCII values for 0-9 are 48-57"
     ],
-    keywords: ["ascii", "table", "value"],
-    open: false,
-    saved: false,
-};
-let ref2: Ref = {
-    id: id++,
-    sourceName: "Character Methods",
-    sourceLink: "https://docs.oracle.com/javase/7/docs/api/java/lang/Character.html",
-    infoToDisplay: [
+    ["ascii", "table", "value"],
+);
+let ref2 = new Ref(
+    "Character Methods",
+    "https://docs.oracle.com/javase/7/docs/api/java/lang/Character.html",
+    [
     "isDigit(char ch)",
     "Determines if the specified character is a digit, returns a boolean.",
     "isUpperCase(char ch)",
     "Determines if the specified character is an uppercase character, returns a boolean."
     ],
-    keywords: ["character", "digit", "letter", "char"],
-    open: false,
-    saved: false,
-};
+    ["character", "digit", "letter", "char"],
+);
 
-let ref3: Ref = {
-    id: id++,
-    sourceName: "Regular Expressions",
-    sourceLink: "https://www.w3schools.com/java/java_regex.asp#:~:text=Metacharacters%20are%20characters%20with%20a%20special%20meaning%3A%20,string%20a%20...%20%204%20more%20rows%20",
-    infoToDisplay: [
+let ref3 = new Ref(
+    "Regular Expressions",
+    "https://www.w3schools.com/java/java_regex.asp#:~:text=Metacharacters%20are%20characters%20with%20a%20special%20meaning%3A%20,string%20a%20...%20%204%20more%20rows%20",
+    [
     "Regex",
     "import java.util.regex.Matcher;",
     "import java.util.regex.Pattern;"
     ],
-    keywords: ["regular", "expression", "regex", "match"],
-    open: false,
-    saved: false,
-};
+    ["regular", "expression", "regex", "match"],
+);
 export let references: Array<Ref> = [ref1, ref2, ref3];

@@ -16,7 +16,7 @@
   // let refs: Array<{ref: Ref, private: boolean, shared: boolean}> = [];
   // let refs: Array<{sourceName: string; sourceLink: string;}> =[];
   let text: string = "";
-  let searchResults: Array<Ref> = references;
+  let manualResults: Array<Ref> = references;
   let listenResults: Array<Ref>;
   let listening: boolean = false;
   let isSearchPage: boolean = true;
@@ -44,7 +44,7 @@
     //         return
     //     }
     
-    function searchRefs(searchString: string, manualSearch: boolean = true) {
+    function searchRefs(searchString: string) {
       // clean text
       console.log(`searchString: ${searchString}`);   
       let keywords = searchString
@@ -52,10 +52,10 @@
         .replace(/[.,\/#!$%\^&\*;:{}@=\-_`~()]/g,"")
         .split(" ");
       console.log(`keywords ${keywords}`);
-      searchResults = [];
+      let searchResults = [];
       for (let i = 0; i<keywords.length; i++) {
         for (let j = 0; j<references.length; j++) {
-          if (references[j].keywords.includes(keywords[i])) {
+          if (references[j].getKeywords().includes(keywords[i])) {
             searchResults.push(references[j]);
             break;
           }
@@ -63,6 +63,14 @@
       }
       console.log(`search results: ${searchResults}`);
       return searchResults;
+    }
+
+    function manualSearch(searchString: string) {
+      manualResults = searchRefs(searchString);
+    }
+
+    function listenSearch(searchString: string) {
+
     }
 
     // gets run when panel first gets mounted, good place to add listeners
@@ -139,6 +147,7 @@
   }
 
   .iconGroup > button {
+    background-color: var(--vscode-editor-background);
     padding: 0px .5px;
   }
 
@@ -186,28 +195,32 @@
   >
     <input placeholder="Search references" bind:value={text} />
   </form>
-  {#each searchResults as result}
+  {#each manualResults as result}
     <div class="list">
-      {#if result.open}
+      {#if result.isOpen()}
         <h3 on:click={()=> {
-          result.open=false;
-        }}><ChevronDownIcon /></h3><h3>{result.sourceName}</h3>
-        <div class="iconGroup"><button><a href={result.sourceLink}><LinkIcon/></a></button><button><BookmarkIcon/></button><button><TrashIcon/></button></div>
-        {#each result.infoToDisplay as info}
-        <p class="info">{info}</p>
-        {/each}
+          result.toggleOpenOrClose();
+          result = result; // need assignment to trigger rerender of svelte component
+        }}><ChevronDownIcon /></h3>
       {:else}
         <h3 on:click={()=> {
-          result.open=true;
-        }}><ChevronRightIcon /></h3><h3>{result.sourceName}</h3>
-        <div class="iconGroup"><button><a href={result.sourceLink}><LinkIcon/></a></button><button><BookmarkIcon/></button><button><TrashIcon/></button></div>
+          result.toggleOpenOrClose();
+          result = result;
+        }}><ChevronRightIcon /></h3>
+      {/if}
+        <h3>{result.getSourceName()}</h3>
+        <div class="iconGroup"><button><a href={result.getSourceLink()}><LinkIcon/></a></button><button><BookmarkIcon/></button><button><TrashIcon/></button></div>
+      {#if result.isOpen()}
+        {#each result.getInfoToDisplay() as info}
+        <p class="info">{info}</p>
+        {/each}
       {/if}
     </div>
   {/each}
 </div>
 
 <div class="listenGroup">
-  {#if listening}
+  {#if (listening || listenResults)}
     <h3>Suggested references:</h3>
 
   {/if}
