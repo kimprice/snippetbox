@@ -1,5 +1,6 @@
 export class Ref {
     private static numRefs: number = 0;
+    private static allRefs: Array<Ref> = [];
     private id: number;
     private sourceName: string;
     private sourceLink: string;
@@ -16,6 +17,7 @@ export class Ref {
         this.infoToDisplay = infoToDisplay;
         this.keywords = keywords;
         this.example = example;
+        Ref.allRefs.push(this);
     }
 
     public getId() {
@@ -60,6 +62,10 @@ export class Ref {
 
     public toggleSaveStatus() {
         this.saved = !this.saved;
+    }
+
+    public static getRefById(id: number): Ref {
+        return Ref.allRefs[id];
     }
 
  };
