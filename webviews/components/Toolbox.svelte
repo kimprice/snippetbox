@@ -142,6 +142,10 @@
     border-bottom: 2px solid var(--vscode-input-placeholderForeground);
   }
 
+  .pageSelected {
+    border-bottom: 2px solid var(--vscode-input-placeholderForeground);
+  }
+
   .iconGroup {
     float: right;
   }
@@ -191,69 +195,81 @@
     }}>OFF</button>
   {/if}
   <div class="menuGroup">
-    <button title="Search"><SearchIcon /> </button> <button title="Favorites"> <LargeStarFullIcon /> </button>
+    <button title="Search" class:pageSelected={isSearchPage} on:click={()=> {
+      if (!isSearchPage) {
+        isSearchPage = true;
+      }
+    }}><SearchIcon /> </button> 
+    <button title="Favorites" class:pageSelected={!isSearchPage} on:click={()=> {
+      if (isSearchPage) {
+        isSearchPage = false;
+      }
+    }}> <LargeStarFullIcon /> </button>
   </div>
 </div>
 
-<div class="searchGroup">
-  <form
-    on:submit|preventDefault={async () => {
-      // todos = [{text, completed: false}, ...todos]
-      searchRefs(text); // this will update searchResults
-      // console.log(text);
-      text = "";
-    }}
-  >
-    <input placeholder="Search references" bind:value={text} />
-  </form>
-  {#each manualResults as result}
-    <div class="list">
-      
-        <button class="chevron" on:click={()=> {
-          result.toggleOpenOrClose();
-          result = result; // need assignment to trigger rerender of svelte component
-        }}>
-          {#if result.isOpen()}
-            <ChevronDownIcon />
-          {:else}
-            <ChevronRightIcon />
-          {/if}
-      </button>
-      
-        <h3>{result.getSourceName()}</h3>
-        <div class="iconGroup">
-          <button><a href={result.getSourceLink()}><LinkIcon/></a></button>
-            {#if !result.isSaved()}
-              <button title="Add to Favorites" on:click={()=> {
-                result.toggleSaveStatus();
-                result = result; // need assignment to trigger rerender of svelte component
-              }}>
-                <StarEmptyIcon/>
-              </button>
+{#if isSearchPage}
+  <div class="searchGroup">
+    <form
+      on:submit|preventDefault={async () => {
+        // todos = [{text, completed: false}, ...todos]
+        searchRefs(text); // this will update searchResults
+        // console.log(text);
+        text = "";
+      }}
+    >
+      <input placeholder="Search references" bind:value={text} />
+    </form>
+    {#each manualResults as result}
+      <div class="list">
+        
+          <button class="chevron" on:click={()=> {
+            result.toggleOpenOrClose();
+            result = result; // need assignment to trigger rerender of svelte component
+          }}>
+            {#if result.isOpen()}
+              <ChevronDownIcon />
             {:else}
-              <button title="Remove from Favorites" on:click={()=> {
-                result.toggleSaveStatus();
-                result = result; // need assignment to trigger rerender of svelte component
-              }}>
-                <StarFullIcon/>
-              </button>
+              <ChevronRightIcon />
             {/if}
-          
-          <button><TrashIcon/></button>
-        </div>
-      {#if result.isOpen()}
-        {#each result.getInfoToDisplay() as info}
-        <p class="info">{info}</p>
-        {/each}
-      {/if}
-    </div>
-  {/each}
-</div>
+        </button>
+        
+          <h3>{result.getSourceName()}</h3>
+          <div class="iconGroup">
+            <button><a href={result.getSourceLink()}><LinkIcon/></a></button>
+              {#if !result.isSaved()}
+                <button title="Add to Favorites" on:click={()=> {
+                  result.toggleSaveStatus();
+                  result = result; // need assignment to trigger rerender of svelte component
+                }}>
+                  <StarEmptyIcon/>
+                </button>
+              {:else}
+                <button title="Remove from Favorites" on:click={()=> {
+                  result.toggleSaveStatus();
+                  result = result; // need assignment to trigger rerender of svelte component
+                }}>
+                  <StarFullIcon/>
+                </button>
+              {/if}
+            
+            <button><TrashIcon/></button>
+          </div>
+        {#if result.isOpen()}
+          {#each result.getInfoToDisplay() as info}
+          <p class="info">{info}</p>
+          {/each}
+        {/if}
+      </div>
+    {/each}
+  </div>
 
-<div class="listenGroup">
-  {#if (listening || listenResults)}
-    <h3>Suggested references:</h3>
+  <div class="listenGroup">
+    {#if (listening || listenResults)}
+      <h3>Suggested references:</h3>
 
-  {/if}
-</div>
+    {/if}
+  </div>
+{:else}
 
+{/if}
