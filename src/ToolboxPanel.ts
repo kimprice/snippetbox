@@ -38,6 +38,7 @@ export class ToolboxPanel {
       {
         // Enable javascript in the webview
         enableScripts: true,
+        retainContextWhenHidden: true, // temporary until implementing getState and setState
 
         // And restrict the webview to only loading content from our extension's `media` directory.
         localResourceRoots: [
