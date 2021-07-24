@@ -11,6 +11,10 @@
   import BookmarkIcon from "./Icons/BookmarkIcon.svelte";
   import SearchIcon from "./Icons/SearchIcon.svelte";
   import LargeBookmarkIcon from "./Icons/LargeBookmarkIcon.svelte";
+  import StarEmptyIcon from "./Icons/StarEmptyIcon.svelte";
+  import StarFullIcon from "./Icons/StarFullIcon.svelte";
+  import LargeStarFullIcon from "./Icons/LargeStarFullIcon.svelte";
+
   let text: string = "";
   let manualResults: Array<Ref> = references;
   let listenResults: Array<Ref>;
@@ -187,7 +191,7 @@
     }}>OFF</button>
   {/if}
   <div class="menuGroup">
-    <button><SearchIcon /> </button> <button> <LargeBookmarkIcon /> </button>
+    <button title="Search"><SearchIcon /> </button> <button title="Favorites"> <LargeStarFullIcon /> </button>
   </div>
 </div>
 
@@ -219,7 +223,22 @@
         <h3>{result.getSourceName()}</h3>
         <div class="iconGroup">
           <button><a href={result.getSourceLink()}><LinkIcon/></a></button>
-          <button><BookmarkIcon/></button>
+            {#if !result.isSaved()}
+              <button title="Add to Favorites" on:click={()=> {
+                result.toggleSaveStatus();
+                result = result; // need assignment to trigger rerender of svelte component
+              }}>
+                <StarEmptyIcon/>
+              </button>
+            {:else}
+              <button title="Remove from Favorites" on:click={()=> {
+                result.toggleSaveStatus();
+                result = result; // need assignment to trigger rerender of svelte component
+              }}>
+                <StarFullIcon/>
+              </button>
+            {/if}
+          
           <button><TrashIcon/></button>
         </div>
       {#if result.isOpen()}
