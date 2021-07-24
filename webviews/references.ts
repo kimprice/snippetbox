@@ -11,7 +11,7 @@ export class Ref {
     private example?: string;
 
     public constructor (sourceName: string, sourceLink: string, infoToDisplay: string[], keywords: string[], example?: string) {
-        this.id = ++Ref.numRefs;
+        this.id = Ref.numRefs++;
         this.sourceName = sourceName;
         this.sourceLink = sourceLink;
         this.infoToDisplay = infoToDisplay;
@@ -66,6 +66,22 @@ export class Ref {
 
     public static getRefById(id: number): Ref {
         return Ref.allRefs[id];
+    }
+
+    public static getAllRefs(): Ref[] {
+        return Ref.allRefs;
+    }
+
+    public static toggleSaveRefById(id: number) {
+        Ref.getRefById(id).toggleSaveStatus();
+    }
+
+    public static getSavedStatusByRef(ref: Ref): boolean {
+        return ref.isSaved();
+    }
+
+    public static getAllFavorites(): Ref[] {
+        return Ref.allRefs.filter(Ref.getSavedStatusByRef);
     }
 
  };

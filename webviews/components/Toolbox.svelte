@@ -1,25 +1,25 @@
 <script lang="ts">
   import { onMount } from "svelte";
   // import type { User, Ref } from "../types";
-  import type { Ref } from "../references";
+  // import type { Ref } from "../references";
+  import {Ref} from "../references";
   // import  { apiBaseUrl } from "../../src/constants";
-  import { references } from "../references";
   import TrashIcon from "./Icons/TrashIcon.svelte";
   import LinkIcon from "./Icons/LinkIcon.svelte";
   import ChevronDownIcon from "./Icons/ChevronDownIcon.svelte";
   import ChevronRightIcon from "./Icons/ChevronRightIcon.svelte";
-  import BookmarkIcon from "./Icons/BookmarkIcon.svelte";
   import SearchIcon from "./Icons/SearchIcon.svelte";
-  import LargeBookmarkIcon from "./Icons/LargeBookmarkIcon.svelte";
   import StarEmptyIcon from "./Icons/StarEmptyIcon.svelte";
   import StarFullIcon from "./Icons/StarFullIcon.svelte";
   import LargeStarFullIcon from "./Icons/LargeStarFullIcon.svelte";
 
   let text: string = "";
+  const references = Ref.getAllRefs();
   let manualResults: Array<Ref> = references;
   let listenResults: Array<Ref>;
   let listening: boolean = false;
   let isSearchPage: boolean = true;
+  let favorites: Array<Ref> = Ref.getAllFavorites();
     // will be called every time any variable in here changes
     // $: {
         //Maybe searchResults should be here
@@ -203,6 +203,7 @@
     <button title="Favorites" class:pageSelected={!isSearchPage} on:click={()=> {
       if (isSearchPage) {
         isSearchPage = false;
+        favorites = Ref.getAllFavorites();
       }
     }}> <LargeStarFullIcon /> </button>
   </div>
@@ -241,6 +242,7 @@
                 <button title="Add to Favorites" on:click={()=> {
                   result.toggleSaveStatus();
                   result = result; // need assignment to trigger rerender of svelte component
+                  // Ref.toggleSaveRefById(result.getId()); // update save status among all refs
                 }}>
                   <StarEmptyIcon/>
                 </button>
@@ -248,6 +250,7 @@
                 <button title="Remove from Favorites" on:click={()=> {
                   result.toggleSaveStatus();
                   result = result; // need assignment to trigger rerender of svelte component
+                  // Ref.toggleSaveRefById(result.getId()); // update save status among all refs
                 }}>
                   <StarFullIcon/>
                 </button>
@@ -271,5 +274,36 @@
     {/if}
   </div>
 {:else}
+  {#each favorites as result}
+    <div class="list">
+      <button class="chevron" on:click={()=> {
+          result.toggleOpenOrClose();
+          favorites = Ref.getAllFavorites(); // need assignment to trigger rerender of svelte component
+        }}>
+          {#if result.isOpen()}
+            <ChevronDownIcon />
+          {:else}
+            <ChevronRightIcon />
+          {/if}
+      </button>
+      
+        <h3>{result.getSourceName()}</h3>
+        <div class="iconGroup">
+          <button><a href={result.getSourceLink()}><LinkIcon/></a></button>
+          <button title="Remove from Favorites" on:click={()=> {
+            result.toggleSaveStatus();
+            favorites = Ref.getAllFavorites(); // need assignment to trigger rerender of svelte component
+          }}>
+            <StarFullIcon/>
+          </button>
+          <button><TrashIcon/></button>
+        </div>
+      {#if result.isOpen()}
+        {#each result.getInfoToDisplay() as info}
+        <p class="info">{info}</p>
+        {/each}
+      {/if}
+    </div>
+  {/each}
 
 {/if}
