@@ -65,9 +65,9 @@
       return searchResults;
     }
 
-    function manualSearch(searchString: string) {
-      manualResults = searchRefs(searchString);
-    }
+    // function manualSearch(searchString: string) {
+    //   manualResults = searchRefs(searchString);
+    // }
 
     function listenSearch(searchString: string) {
 
@@ -214,7 +214,7 @@
     <form
       on:submit|preventDefault={async () => {
         // todos = [{text, completed: false}, ...todos]
-        searchRefs(text); // this will update searchResults
+        manualResults = searchRefs(text); // this will update searchResults
         // console.log(text);
         text = "";
       }}
