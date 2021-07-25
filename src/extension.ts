@@ -3,11 +3,13 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { ToolboxPanel } from './ToolboxPanel';
+import { ToolboxPanel, keywords } from './ToolboxPanel';
 import { SidebarProvider } from './SidebarProvider';
 import { authenticate } from './authenticate';
 import { TokenManager } from './TokenManager';
 import { SpeechClient } from './SpeechClient';
+
+let speechClientInitiated = false;
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -131,7 +133,15 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetbox.listen', async () => {
 			try {
-				await SpeechClient.startSpeechRecognition();
+				if (!speechClientInitiated) {
+					console.log(JSON.parse(keywords));
+					await SpeechClient.startSpeechRecognition(JSON.parse(keywords));
+					speechClientInitiated = true;
+				}
+				else {
+					await SpeechClient.startSpeechRecognition();
+				}
+				
 			} catch (err) {
 				console.log(err);
 			}

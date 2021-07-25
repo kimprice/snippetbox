@@ -1,6 +1,8 @@
 import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
 
+export let keywords = "";
+
 export class ToolboxPanel {
   /**
    * Track the current panel. Only allow a single panel to exist at a time.
@@ -110,6 +112,9 @@ export class ToolboxPanel {
     webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
         case "startListen": {
+          if (!keywords) {
+            keywords = data.value; // set keywords the first time
+          }
           vscode.commands.executeCommand("snippetbox.listen");
           break;
         }

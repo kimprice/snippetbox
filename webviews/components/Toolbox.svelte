@@ -20,6 +20,7 @@
   let listening: boolean = false;
   let isSearchPage: boolean = true;
   let favorites: Array<Ref> = Ref.getAllFavorites();
+  let keywords = JSON.stringify(Ref.getAllKeywords());
     // will be called every time any variable in here changes
     // $: {
         //Maybe searchResults should be here
@@ -190,7 +191,7 @@
     <!-- svelte-ignore missing-declaration -->
     <button title="Turn on for suggested references" on:click={()=> {
       // send message to extension
-      tsvscode.postMessage({type: 'startListen', value: undefined});
+      tsvscode.postMessage({type: 'startListen', value: keywords});
       listening = true;
     }}>OFF</button>
   {/if}

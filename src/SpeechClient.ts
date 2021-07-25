@@ -19,23 +19,39 @@ const encoding = 'LINEAR16'; // 'Encoding of the audio file, e.g. LINEAR16';
 const sampleRateHertz = 16000;
 const languageCode = 'en-US'; // 'BCP-47 language code, e.g. en-US';
 
-const request = {
-  config: {
-    encoding: encoding,
-    sampleRateHertz: sampleRateHertz,
-    languageCode: languageCode,
-  },
-  interimResults: false, // If you want interim results, set this to true
-};
+
 
 // TODO - maybe define properties
 let recognizeStream: any = null;
 let recording: any = null;
+let request: any = null;
 
 export class SpeechClient {
 
-  static async startSpeechRecognition() {
-      // Create a recognize stream
+  private static isConfigured = false;
+
+  static setSpeechConfiguration(keywords?: string[]) {
+    // Set configuration
+    request = {
+      config: {
+        encoding: encoding,
+        sampleRateHertz: sampleRateHertz,
+        languageCode: languageCode,
+      },
+      speechContexts: [{
+        phrases: keywords,
+      }],
+      interimResults: false, // If you want interim results, set this to true
+    };
+  }
+
+  static async startSpeechRecognition(keywords?: string[]) {
+
+    if (!SpeechClient.isConfigured) {
+      SpeechClient.setSpeechConfiguration(keywords);
+    }
+
+    // Create a recognize stream
     let transcript = "";
     recognizeStream = await client
     .streamingRecognize(request)
@@ -82,7 +98,7 @@ export class SpeechClient {
         // Other options, see https://www.npmjs.com/package/node-record-lpcm16#options
         verbose: false,
         recordProgram: 'rec', // Try also "arecord" or "sox"
-        silence: '10.0',
+        silence: '1.0',
       })
       .stream()
       .on('error', console.error)

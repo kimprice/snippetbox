@@ -84,6 +84,15 @@ export class Ref {
         return Ref.allRefs.filter(Ref.getSavedStatusByRef);
     }
 
+    public static getAllKeywords(): string[] {
+        let keywords: string[] = [];
+        Ref.allRefs.forEach((ref) => {
+            keywords = [...keywords, ...ref.keywords];
+        });
+        keywords = [...new Set(keywords)]; // only keep distinct keywords
+        return keywords;
+    }
+
  };
 let ref1 = new Ref(
     "ASCII Table",
