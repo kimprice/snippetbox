@@ -9,6 +9,8 @@ export class Ref {
     private open: boolean = false;
     private saved: boolean = false;
     private example?: string;
+    private identifiedFromSpeech: boolean = false;
+    private timeLastHeard: Date = new Date(); // sets date when initialized, but won't be used
 
     public constructor (sourceName: string, sourceLink: string, infoToDisplay: string[], keywords: string[], example?: string) {
         this.id = Ref.numRefs++;
@@ -44,12 +46,31 @@ export class Ref {
         return this.example;
     }
 
+    public getTimeLastHeard() {
+        return this.timeLastHeard;
+    }
+
     public isOpen() {
         return this.open;
     }
 
     public isSaved() {
         return this.saved;
+    }
+
+    public isIdentifiedBySpeech() {
+        return this.identifiedFromSpeech;
+    }
+
+    public setOrUpdateIdentifiedBySpeech() {
+        if (!this.identifiedFromSpeech) {
+            this.identifiedFromSpeech = true;
+        } 
+        this.timeLastHeard = new Date(); // reset time
+    }
+
+    public clearIdentifiedBySpeech() {
+        this.identifiedFromSpeech = false;
     }
 
     public toggleOpenOrClose(openStatus?: boolean) {
@@ -80,8 +101,16 @@ export class Ref {
         return ref.isSaved();
     }
 
+    public static getSpeechIdentifiedByRef(ref: Ref): boolean {
+        return ref.isIdentifiedBySpeech();
+    }
+
     public static getAllFavorites(): Ref[] {
         return Ref.allRefs.filter(Ref.getSavedStatusByRef);
+    }
+
+    public static getRecentIdentifiedBySpeech(): Ref[] {
+        return Ref.allRefs.filter(Ref.getSpeechIdentifiedByRef);
     }
 
     public static getAllKeywords(): string[] {

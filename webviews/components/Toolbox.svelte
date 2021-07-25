@@ -16,7 +16,7 @@
   let text: string = "";
   const references = Ref.getAllRefs();
   let manualResults: Array<Ref> = references;
-  let listenResults: Array<Ref>;
+  let listenResults: Array<Ref> = [];
   let listening: boolean = false;
   let isSearchPage: boolean = true;
   let favorites: Array<Ref> = Ref.getAllFavorites();
@@ -45,7 +45,7 @@
     //         return
     //     }
     
-    function searchRefs(searchString: string) {
+    function searchRefs(searchString: string, fromSpeech?: boolean) {
       // clean text
       console.log(`searchString: ${searchString}`);   
       let keywords = searchString
@@ -58,6 +58,9 @@
         for (let j = 0; j<references.length; j++) {
           if (references[j].getKeywords().includes(keywords[i])) {
             searchResults.push(references[j]);
+            if (fromSpeech) {
+              references[j].setOrUpdateIdentifiedBySpeech();
+            }
             break;
           }
         }
@@ -66,12 +69,16 @@
       return searchResults;
     }
 
-    // function manualSearch(searchString: string) {
-    //   manualResults = searchRefs(searchString);
-    // }
+    function compareDates(d1: Date, d2: Date): number {
+      if (d1 > d2) return -1;
+      if (d1 < d2) return 1;
+      return 0;
+    }
 
     function listenSearch(searchString: string) {
-
+      searchRefs(searchString, true);
+      listenResults = Ref.getRecentIdentifiedBySpeech();
+      listenResults.sort((a, b) => compareDates(a.getTimeLastHeard(),b.getTimeLastHeard()));
     }
 
     // gets run when panel first gets mounted, good place to add listeners
@@ -82,10 +89,10 @@
                 case "new-ref":
                     // saveRef(message.value);
                     break;
-                case "transcript": //or maybe "wordsDetected"
+                case "transcript":
                   // search through Refs with keywords
-                  console.log(`received on svelte side transcript: ${message.value}`)
-                  searchRefs(message.value);
+                  // console.log(`received on svelte side transcript: ${message.value}`)
+                  listenSearch(message.value);
                   break;
             }
 
@@ -165,18 +172,8 @@
     outline: 0px;
   }
 
-  /* .selected {
-    border-bottom: 1px solid currentColor;
-  } */
-
 </style>
 
-<!-- TODO: Call this {user.name view}, add tooltip -->
-<!-- click microphone icon to turn listening on/off, send message -->
-
-<!-- <i class="fas fa-microphone fa-lg mr-2" on:click={()=>{
-
-}}></i> -->
 <div>
   <h3>Listening is</h3>
   {#if listening}
@@ -214,9 +211,7 @@
   <div class="searchGroup">
     <form
       on:submit|preventDefault={async () => {
-        // todos = [{text, completed: false}, ...todos]
         manualResults = searchRefs(text); // this will update searchResults
-        // console.log(text);
         text = "";
       }}
     >
@@ -228,6 +223,7 @@
           <button class="chevron" on:click={()=> {
             result.toggleOpenOrClose();
             result = result; // need assignment to trigger rerender of svelte component
+            listenResults = listenResults; // update listen results to rerender section
           }}>
             {#if result.isOpen()}
               <ChevronDownIcon />
@@ -238,12 +234,12 @@
         
           <h3>{result.getSourceName()}</h3>
           <div class="iconGroup">
-            <button><a href={result.getSourceLink()}><LinkIcon/></a></button>
+            <button title="Open Link in Browser"><a href={result.getSourceLink()}><LinkIcon/></a></button>
               {#if !result.isSaved()}
                 <button title="Add to Favorites" on:click={()=> {
                   result.toggleSaveStatus();
                   result = result; // need assignment to trigger rerender of svelte component
-                  // Ref.toggleSaveRefById(result.getId()); // update save status among all refs
+                  listenResults = listenResults; // update listen results to rerender section
                 }}>
                   <StarEmptyIcon/>
                 </button>
@@ -251,7 +247,7 @@
                 <button title="Remove from Favorites" on:click={()=> {
                   result.toggleSaveStatus();
                   result = result; // need assignment to trigger rerender of svelte component
-                  // Ref.toggleSaveRefById(result.getId()); // update save status among all refs
+                  listenResults = listenResults; // update listen results to rerender section
                 }}>
                   <StarFullIcon/>
                 </button>
@@ -269,12 +265,55 @@
   </div>
 
   <div class="listenGroup">
-    {#if (listening || listenResults)}
+    {#if (listening || (listenResults.length > 0))}
       <h3>Suggested references:</h3>
-
+      {#each listenResults as result}
+    <div class="list">
+      <button class="chevron" on:click={()=> {
+          result.toggleOpenOrClose();
+          listenResults = listenResults; // need assignment to trigger rerender of svelte component
+          manualResults = manualResults;
+        }}>
+          {#if result.isOpen()}
+            <ChevronDownIcon />
+          {:else}
+            <ChevronRightIcon />
+          {/if}
+      </button>
+      
+        <h3>{result.getSourceName()}</h3>
+        <div class="iconGroup">
+          <button title="Open Link in Browser"><a href={result.getSourceLink()}><LinkIcon/></a></button>
+          {#if !result.isSaved()}
+            <button title="Add to Favorites" on:click={()=> {
+              result.toggleSaveStatus();
+              result = result; // need assignment to trigger rerender of svelte component
+              manualResults = manualResults;
+            }}>
+              <StarEmptyIcon/>
+            </button>
+          {:else}
+            <button title="Remove from Favorites" on:click={()=> {
+              result.toggleSaveStatus();
+              result = result; // need assignment to trigger rerender of svelte component
+              manualResults = manualResults;
+            }}>
+              <StarFullIcon/>
+            </button>
+          {/if}
+          <button><TrashIcon/></button>
+        </div>
+      {#if result.isOpen()}
+        {#each result.getInfoToDisplay() as info}
+        <p class="info">{info}</p>
+        {/each}
+      {/if}
+    </div>
+  {/each}
     {/if}
   </div>
 {:else}
+<!-- Favorites Page -->
   {#each favorites as result}
     <div class="list">
       <button class="chevron" on:click={()=> {
@@ -290,7 +329,7 @@
       
         <h3>{result.getSourceName()}</h3>
         <div class="iconGroup">
-          <button><a href={result.getSourceLink()}><LinkIcon/></a></button>
+          <button title="Open Link in Browser"><a href={result.getSourceLink()}><LinkIcon/></a></button>
           <button title="Remove from Favorites" on:click={()=> {
             result.toggleSaveStatus();
             favorites = Ref.getAllFavorites(); // need assignment to trigger rerender of svelte component
