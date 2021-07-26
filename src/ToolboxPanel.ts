@@ -122,6 +122,13 @@ export class ToolboxPanel {
           vscode.commands.executeCommand("snippetbox.stopListen");
           break;
         }
+
+        case "newRef": {
+          // console.log("toolbox Panel received new Ref!");
+          vscode.window.showInformationMessage(`New Resource: ${data.value}`);
+          break;
+        }
+
         case "onInfo": {
           if (!data.value) {
             return;

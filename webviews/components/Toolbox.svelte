@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   // import type { User, Ref } from "../types";
-  // import type { Ref } from "../references";
   import {Ref} from "../references";
   // import  { apiBaseUrl } from "../../src/constants";
   import TrashIcon from "./Icons/TrashIcon.svelte";
@@ -15,7 +14,7 @@
 
   let text: string = "";
   const references = Ref.getAllRefs();
-  let manualResults: Array<Ref> = references;
+  let manualResults: Array<Ref> = [];
   let listenResults: Array<Ref> = [];
   let listening: boolean = false;
   let isSearchPage: boolean = true;
@@ -46,13 +45,12 @@
     //     }
     
     function searchRefs(searchString: string, fromSpeech?: boolean) {
-      // clean text
-      console.log(`searchString: ${searchString}`);   
+      // clean text  
       let keywords = searchString
         .toLowerCase()
         .replace(/[.,\/#!$%\^&\*;:{}@=\-_`~()]/g,"")
         .split(" ");
-      console.log(`keywords ${keywords}`);
+      // console.log(`keywords ${keywords}`);
       let searchResults = [];
       for (let i = 0; i<keywords.length; i++) {
         for (let j = 0; j<references.length; j++) {
@@ -60,12 +58,13 @@
             searchResults.push(references[j]);
             if (fromSpeech) {
               references[j].setOrUpdateIdentifiedBySpeech();
+            } else {
+              references[j].setNotNew();
             }
             break;
           }
         }
       }
-      console.log(`search results: ${searchResults}`);
       return searchResults;
     }
 
@@ -86,13 +85,23 @@
         window.addEventListener("message", async (event) => {
             const message = event.data; // The json data that the extension sent
             switch (message.type) {
-                case "new-ref":
+                case "newRef":
                     // saveRef(message.value);
                     break;
                 case "transcript":
                   // search through Refs with keywords
-                  // console.log(`received on svelte side transcript: ${message.value}`)
                   listenSearch(message.value);
+                  // TODO: also show notifications if the toolbox is hidden
+                  if (!isSearchPage && listening) { // if not on search page show as notifications
+                    // only show new resources so it is not overwhelming/annoying
+                    for (let i = 0; i < listenResults.length; i++) {
+                      if (listenResults[i].isNew()) {
+                        // send message to extension
+                        tsvscode.postMessage({type: 'newRef', value: listenResults[i].getSourceName()});
+                        listenResults[i].setNotNew();
+                      }
+                    }
+                  }
                   break;
             }
 
@@ -138,6 +147,7 @@
 
   .menuGroup {
     float: right;
+    padding-bottom: 0.5em;
   }
 
   .menuGroup > button {
@@ -219,7 +229,6 @@
     </form>
     {#each manualResults as result}
       <div class="list">
-        
           <button class="chevron" on:click={()=> {
             result.toggleOpenOrClose();
             result = result; // need assignment to trigger rerender of svelte component

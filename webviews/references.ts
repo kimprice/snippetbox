@@ -8,6 +8,7 @@ export class Ref {
     private keywords: string[];
     private open: boolean = false;
     private saved: boolean = false;
+    private new: boolean = true;
     private example?: string;
     private identifiedFromSpeech: boolean = false;
     private timeLastHeard: Date = new Date(); // sets date when initialized, but won't be used
@@ -58,6 +59,10 @@ export class Ref {
         return this.saved;
     }
 
+    public isNew() {
+        return this.new;
+    }
+
     public isIdentifiedBySpeech() {
         return this.identifiedFromSpeech;
     }
@@ -83,6 +88,10 @@ export class Ref {
 
     public toggleSaveStatus() {
         this.saved = !this.saved;
+    }
+
+    public setNotNew() {
+        this.new = false;
     }
 
     public static getRefById(id: number): Ref {
