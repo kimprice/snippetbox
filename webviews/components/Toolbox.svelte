@@ -132,6 +132,10 @@
     color: currentColor;
   }
 
+  input {
+    margin-top: 0.5em;
+  }
+
   .info {
     padding-left: 20px;
   }
@@ -147,7 +151,7 @@
 
   .menuGroup {
     float: right;
-    padding-bottom: 0.5em;
+    /* padding-bottom: 0.5em;  this was creating an issue on the favorites tab */
   }
 
   .menuGroup > button {
