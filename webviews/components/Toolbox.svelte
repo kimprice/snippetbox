@@ -51,6 +51,10 @@
         .replace(/[.,\/#!$%\^&\*;:{}@=\-_`~()]/g,"")
         .split(" ");
       // console.log(`keywords ${keywords}`);
+      if (!fromSpeech && keywords.includes("all")) {
+        return references;
+      }
+
       let searchResults = [];
       for (let i = 0; i<keywords.length; i++) {
         for (let j = 0; j<references.length; j++) {
@@ -136,6 +140,10 @@
     margin-top: 0.5em;
   }
 
+  p {
+    background-color: var(--vscode-input-background);
+  }
+
   .info {
     padding-left: 20px;
   }
@@ -145,9 +153,10 @@
     padding-bottom: 0.5em;
   }
 
-  /* .list {
-    display: grid;
-  } */
+  .list {
+    border: 2px solid var(--vscode-input-background);
+    margin-top: 0.5em;
+  }
 
   .menuGroup {
     float: right;
