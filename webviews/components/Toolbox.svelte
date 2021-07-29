@@ -20,9 +20,10 @@
   let isSearchPage: boolean = true;
   let favorites: Array<Ref> = Ref.getAllFavorites();
   let keywords = JSON.stringify(Ref.getAllKeywords());
+  let isVisible: boolean;
+
     // will be called every time any variable in here changes
     // $: {
-        //Maybe searchResults should be here
     //     tsvscode.setState({
     //         text: text,
     //     })
@@ -89,23 +90,35 @@
         window.addEventListener("message", async (event) => {
             const message = event.data; // The json data that the extension sent
             switch (message.type) {
-                case "newRef":
-                    // saveRef(message.value);
-                    break;
                 case "transcript":
                   // search through Refs with keywords
                   listenSearch(message.value);
                   // TODO: also show notifications if the toolbox is hidden
-                  if (!isSearchPage && listening) { // if not on search page show as notifications
+                  if (listening && (!isSearchPage || isVisible)) { // if not on search page show as notifications
                     // only show new resources so it is not overwhelming/annoying
                     for (let i = 0; i < listenResults.length; i++) {
                       if (listenResults[i].isNew()) {
                         // send message to extension
-                        tsvscode.postMessage({type: 'newRef', value: listenResults[i].getSourceName()});
+                        tsvscode.postMessage({type: 'newRef', value: `${listenResults[i].getSourceName()}-${listenResults[i].getId()}`});
                         listenResults[i].setNotNew();
                       }
                     }
                   }
+                  break;
+                  case "newRef":
+                    // saveRef(message.value);
+                    const params = message.value.split("-");
+                    if (params[0] === "search") {
+                      isSearchPage = true;
+                      listenResults = listenResults; // rerender
+                    } else if (params[0] === "favorites") {
+                      isSearchPage = false;
+                      Ref.getRefById(params[1]).toggleSaveStatus(true);
+                      favorites = Ref.getAllFavorites(); // need assignment to trigger rerender of svelte component
+                    }
+                    break;
+                  case "visible":
+                   isVisible = message.value;
                   break;
             }
 

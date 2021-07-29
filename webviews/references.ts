@@ -86,8 +86,12 @@ export class Ref {
         }
     }
 
-    public toggleSaveStatus() {
-        this.saved = !this.saved;
+    public toggleSaveStatus(save?: boolean) {
+        if (save) { // specify saved or not
+            this.saved = true;
+        } else { // toggle
+            this.saved = !this.saved;
+        }   
     }
 
     public setNotNew() {
