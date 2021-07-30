@@ -1,50 +1,80 @@
 <script lang="ts">
 import { onMount } from "svelte";
-import type { User, State } from "../types";
-import Todos from "./Todos.svelte";
+import { keywords } from "../references";
+// import type { User, State } from "../types";
+// import Todos from "./Todos.svelte";
 
-    let accessToken = '';
-    let loading = true;
-    let user: User | null = null;
-    let lastState = tsvscode.getState();
-    let page: "todos" | "contact" = lastState?.page || "todos";
-    let text = lastState?.text || "";
-    let state: State = {page, text};
+    // let accessToken = '';
+    // let loading = true;
+    // let user: User | null = null;
+    // let lastState = tsvscode.getState();
+    // let page: "todos" | "contact" = lastState?.page || "todos";
+    // let text = lastState?.text || "";
+    // let state: State = {page, text};
+    let listenSettingOn = false;
+    let notificationsSettingOn = true;
 
     // will be called every time any variable in here changes
-    $: {
-        tsvscode.setState({state});
-    }
+    // $: {
+    //     tsvscode.setState({state});
+    // }
 
     // gets run when panel first gets mounted, good place to add listeners
     onMount(async () => {
         window.addEventListener("message", async (event) => {
             const message = event.data; // The json data that the extension sent
             switch (message.type) {
-                case 'token':
-                    accessToken = message.value;
-                    const response = await fetch(`${apiBaseUrl}/me`, {
-                        headers: {
-                            authorization: `Bearer ${accessToken}`,
-                        },
-                    });
-                    const data = await response.json();
-                    user = data.user;
-                    loading = false;
+                // case 'token':
+                //     accessToken = message.value;
+                //     const response = await fetch(`${apiBaseUrl}/me`, {
+                //         headers: {
+                //             authorization: `Bearer ${accessToken}`,
+                //         },
+                //     });
+                //     const data = await response.json();
+                //     user = data.user;
+                //     loading = false;
+                //     break;
+                case 'setting':
+                    break;
             }
         });
 
-        tsvscode.postMessage({type: 'get-token', value: undefined});
+        // tsvscode.postMessage({type: 'get-token', value: undefined});
 
         
     });
 </script>
 
-{#if loading}
+<style>
+    h3 {
+        display: inline-block;
+        margin: 1px;
+        padding: 3px;
+    }
+
+    h2 {
+        border-bottom: 1px solid var(--vscode-input-placeholderForeground);
+        padding: 1px;
+    }
+
+    .openToolbox {
+        width: 100%;
+    }
+
+    .settingButton {
+        float: right;
+        padding: 3px 5px;
+        margin: 1px;
+    }
+
+</style>
+
+<!-- {#if loading}
     <div>loading...</div>
-{:else if user}
+{:else if user} -->
     <!-- <pre>{JSON.stringify(user, null, 2)}</pre> -->
-    {#if state.page === 'todos'}
+    <!-- {#if state.page === 'todos'}
         <Todos {user} {accessToken} bind:text/>
         <button on:click={() => {
             console.log(`clicked contact, state page: ${state.page}`);
@@ -53,12 +83,51 @@ import Todos from "./Todos.svelte";
             };
             lastState.text = text;
             console.log(`clicked contact-after, state page: ${state.page}`);
-        }}>go to contact</button>
+        }}>go to contact</button> -->
         <!-- svelte-ignore missing-declaration -->
-        <button on:click={() => {
+        <button class="openToolbox" on:click={() => {
             tsvscode.postMessage({type: 'toolbox', value: undefined});
         }}>Open Toolbox</button>
-    {:else}
+        <h2>Settings</h2>
+    <div>
+        <h3>Listening: </h3>
+        {#if listenSettingOn}
+            <!-- svelte-ignore missing-declaration -->
+            <button class="settingButton" on:click={()=> {
+            // send message to extension
+            tsvscode.postMessage({type: 'stopListen', value: undefined});
+            listenSettingOn = false; // might want to do this after getting confirmation?
+            }}>ON</button>
+            
+        {:else}
+            <!-- svelte-ignore missing-declaration -->
+            <button class="settingButton" title="Turn on for suggested references" on:click={()=> {
+            // send message to extension
+            tsvscode.postMessage({type: 'startListen', value: keywords});
+            listenSettingOn = true;
+            }}>OFF</button>
+        {/if}
+    </div>
+    <div>
+        <h3>Notifications: </h3>
+        {#if notificationsSettingOn}
+            <!-- svelte-ignore missing-declaration -->
+            <button class="settingButton" on:click={()=> {
+            // send message to extension
+            tsvscode.postMessage({type: 'stopNotifications', value: undefined});
+            notificationsSettingOn = false; // might want to do this after getting confirmation?
+            }}>ON</button>
+            
+        {:else}
+            <!-- svelte-ignore missing-declaration -->
+            <button class="settingButton" title="Turn on for reference notifcations" on:click={()=> {
+            // send message to extension
+            tsvscode.postMessage({type: 'startNotifications', value: keywords});
+            notificationsSettingOn = true;
+            }}>OFF</button>
+        {/if}
+    </div>
+    <!-- {:else}
         <a href="https://scholar.google.com/citations?user=AVSNW8gAAAAJ&hl=en&oi=ao">Google Scholar Page</a>
         <button on:click={() => {
             console.log(`clicked back, state page: ${state.page}`);
@@ -68,17 +137,17 @@ import Todos from "./Todos.svelte";
             };
             console.log(`clicked back-after, state page: ${state.page}`);
         }}>go back</button>
-    {/if}
+    {/if} -->
     <!-- svelte-ignore missing-declaration -->
-    <button on:click={() => {
+    <!-- <button on:click={() => {
         accessToken='';
         user = null;
         tsvscode.postMessage({type: 'logout', value: undefined});
     }}>logout</button>
-{:else}
+{:else} -->
     <!-- svelte-ignore missing-declaration -->
-    <button on:click={() => {
+    <!-- <button on:click={() => {
         tsvscode.postMessage({type: 'authenticate', value: undefined});
     }}>login with GitHub</button>
-{/if}
+{/if} -->
 

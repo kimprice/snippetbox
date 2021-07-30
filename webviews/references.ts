@@ -169,3 +169,4 @@ let ref3 = new Ref(
     ["regular", "expression", "regex", "match"],
 );
 export let references: Array<Ref> = [ref1, ref2, ref3];
+export let keywords = JSON.stringify(Ref.getAllKeywords());

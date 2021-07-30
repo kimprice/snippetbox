@@ -19,7 +19,7 @@
   let listening: boolean = false;
   let isSearchPage: boolean = true;
   let favorites: Array<Ref> = Ref.getAllFavorites();
-  let keywords = JSON.stringify(Ref.getAllKeywords());
+  let keywords = JSON.stringify(Ref.getAllKeywords()); // could prob replace this with Ref.keywords
   let isVisible: boolean;
 
     // will be called every time any variable in here changes
@@ -208,13 +208,17 @@
     outline: 0px;
   }
 
+  .onOff {
+    padding: 3px 5px;
+  }
+
 </style>
 
 <div>
   <h3>Listening is</h3>
   {#if listening}
     <!-- svelte-ignore missing-declaration -->
-    <button on:click={()=> {
+    <button class="onOff" on:click={()=> {
       // send message to extension
       tsvscode.postMessage({type: 'stopListen', value: undefined});
       listening = false; // might want to do this after getting confirmation?
@@ -222,7 +226,7 @@
     
   {:else}
     <!-- svelte-ignore missing-declaration -->
-    <button title="Turn on for suggested references" on:click={()=> {
+    <button class="onOff" title="Turn on for suggested references" on:click={()=> {
       // send message to extension
       tsvscode.postMessage({type: 'startListen', value: keywords});
       listening = true;
