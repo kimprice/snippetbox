@@ -1,7 +1,7 @@
 <script lang="ts">
 import { onMount } from "svelte";
 import { keywords } from "../references";
-// import type { User, State } from "../types";
+import type { State } from "../types";
 // import Todos from "./Todos.svelte";
 
     // let accessToken = '';
@@ -10,14 +10,20 @@ import { keywords } from "../references";
     // let lastState = tsvscode.getState();
     // let page: "todos" | "contact" = lastState?.page || "todos";
     // let text = lastState?.text || "";
-    // let state: State = {page, text};
-    let listenSettingOn = false;
-    let notificationsSettingOn = true;
+    let lastState = tsvscode.getState();
+    let listenSettingOn = lastState?.listenSettingOn || false;
+    let notificationsSettingOn = lastState?.notificationsSettingOn || true;
+    let toolboxInitiated = lastState?.toolboxInitiated || false;
+    let state: State = {listenSettingOn, notificationsSettingOn, toolboxInitiated};
 
     // will be called every time any variable in here changes
-    // $: {
-    //     tsvscode.setState({state});
-    // }
+    $: {
+        tsvscode.setState({ 
+            listenSettingOn: listenSettingOn, 
+            notificationsSettingOn: notificationsSettingOn, 
+            toolboxInitiated: toolboxInitiated,
+        });
+    }
 
     // gets run when panel first gets mounted, good place to add listeners
     onMount(async () => {
@@ -92,7 +98,9 @@ import { keywords } from "../references";
         <!-- svelte-ignore missing-declaration -->
         <button class="openToolbox" on:click={() => {
             tsvscode.postMessage({type: 'toolbox', value: undefined});
+            toolboxInitiated = true;
         }}>Open Toolbox</button>
+    {#if toolboxInitiated}
         <h2>Settings</h2>
     <div>
         <h3>Listening: </h3>
@@ -132,6 +140,7 @@ import { keywords } from "../references";
             }}>OFF</button>
         {/if}
     </div>
+    {/if}
     <!-- {:else}
         <a href="https://scholar.google.com/citations?user=AVSNW8gAAAAJ&hl=en&oi=ao">Google Scholar Page</a>
         <button on:click={() => {

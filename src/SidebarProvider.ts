@@ -5,12 +5,12 @@ import { getNonce } from "./getNonce";
 import { TokenManager } from "./TokenManager";
 import { ToolboxPanel } from "./ToolboxPanel";
 
-export let keywords = "";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
     _view?: vscode.WebviewView;
     _doc?: vscode.TextDocument;
     private static sidebarWebview: vscode.Webview;
+    public static keywords = ""; // TODO make private and add getter/setter
 
     constructor(private readonly _extensionUri: vscode.Uri) { }
 
@@ -21,7 +21,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         webviewView.webview.options = {
             // Allow scripts in the webview
             enableScripts: true,
-
             localResourceRoots: [this._extensionUri],
         };
 
@@ -34,8 +33,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                     break;
                 }
                 case "startListen": {
-                    if (!keywords) {
-                      keywords = data.value; // set keywords the first time
+                    if (!SidebarProvider.keywords) {
+                      SidebarProvider.keywords = data.value; // set keywords the first time
                     }
                     vscode.commands.executeCommand("snippetbox.listen");
                     ToolboxPanel.getPanelWebview()?.postMessage({

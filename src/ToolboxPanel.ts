@@ -2,8 +2,6 @@ import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
 import { SidebarProvider } from "./SidebarProvider";
 
-export let keywords = "";
-
 export class ToolboxPanel {
   /**
    * Track the current panel. Only allow a single panel to exist at a time.
@@ -11,6 +9,8 @@ export class ToolboxPanel {
   public static currentPanel: ToolboxPanel | undefined;
 
   public static readonly viewType = "toolbox";
+
+  public static keywords = ""; // TODO make private and add getter/setter
 
   private readonly _panel: vscode.WebviewPanel;
   private readonly _extensionUri: vscode.Uri;
@@ -32,6 +32,7 @@ export class ToolboxPanel {
       // ToolboxPanel.currentPanel._update(); removed to prevent panel from being reinitiated
       return;
     }
+
 
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
@@ -119,8 +120,8 @@ export class ToolboxPanel {
     webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
         case "startListen": {
-          if (!keywords) {
-            keywords = data.value; // set keywords the first time
+          if (!ToolboxPanel.keywords) {
+            ToolboxPanel.keywords = data.value; // set keywords the first time
           }
           vscode.commands.executeCommand("snippetbox.listen");
           SidebarProvider.getWebview()?.postMessage({

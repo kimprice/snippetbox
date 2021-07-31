@@ -21,7 +21,7 @@
   let favorites: Array<Ref> = Ref.getAllFavorites();
   let keywords = JSON.stringify(Ref.getAllKeywords()); // could prob replace this with Ref.keywords
   let isVisible: boolean;
-  let notifications: boolean;
+  let notifications: boolean = true;
 
     // will be called every time any variable in here changes
     // $: {
@@ -95,7 +95,7 @@
                   // search through Refs with keywords
                   listenSearch(message.value);
                   // TODO: also show notifications if the toolbox is hidden
-                  if (listening && (!isSearchPage || isVisible)) { // if not on search page show as notifications
+                  if (listening && notifications && (!isSearchPage || !isVisible)) { // if not on search page show as notifications
                     // only show new resources so it is not overwhelming/annoying
                     for (let i = 0; i < listenResults.length; i++) {
                       if (listenResults[i].isNew()) {
@@ -119,7 +119,7 @@
                     }
                     break;
                   case "visible":
-                   isVisible = message.value;
+                   isVisible = (message.value === "true");
                   break;
                   case "setting":
                     switch (message.value) {
