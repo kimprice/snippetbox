@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
+import { SidebarProvider } from "./SidebarProvider";
 
 export let keywords = "";
 
@@ -122,10 +123,18 @@ export class ToolboxPanel {
             keywords = data.value; // set keywords the first time
           }
           vscode.commands.executeCommand("snippetbox.listen");
+          SidebarProvider.getWebview()?.postMessage({
+            type: "listening",
+            value: "on",
+          });
           break;
         }
         case "stopListen": {
           vscode.commands.executeCommand("snippetbox.stopListen");
+          SidebarProvider.getWebview()?.postMessage({
+            type: "listening",
+            value: "off",
+          });
           break;
         }
 

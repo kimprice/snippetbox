@@ -35,7 +35,12 @@ import { keywords } from "../references";
                 //     user = data.user;
                 //     loading = false;
                 //     break;
-                case 'setting':
+                case 'listening':
+                    if (message.value === "on") {
+                        listenSettingOn = true;
+                    } else if (message.value === "off") {
+                        listenSettingOn = false;
+                    }
                     break;
             }
         });
@@ -122,7 +127,7 @@ import { keywords } from "../references";
             <!-- svelte-ignore missing-declaration -->
             <button class="settingButton" title="Turn on for reference notifcations" on:click={()=> {
             // send message to extension
-            tsvscode.postMessage({type: 'startNotifications', value: keywords});
+            tsvscode.postMessage({type: 'startNotifications', value: undefined});
             notificationsSettingOn = true;
             }}>OFF</button>
         {/if}

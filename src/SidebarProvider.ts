@@ -3,15 +3,20 @@ import { authenticate } from "./authenticate";
 import { apiBaseUrl } from "./constants";
 import { getNonce } from "./getNonce";
 import { TokenManager } from "./TokenManager";
+import { ToolboxPanel } from "./ToolboxPanel";
+
+export let keywords = "";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
     _view?: vscode.WebviewView;
     _doc?: vscode.TextDocument;
+    private static sidebarWebview: vscode.Webview;
 
     constructor(private readonly _extensionUri: vscode.Uri) { }
 
     public resolveWebviewView(webviewView: vscode.WebviewView) {
         this._view = webviewView;
+        SidebarProvider.sidebarWebview = webviewView.webview;
 
         webviewView.webview.options = {
             // Allow scripts in the webview
@@ -24,6 +29,43 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
         webviewView.webview.onDidReceiveMessage(async (data) => {
             switch (data.type) {
+                case "toolbox": {
+                    vscode.commands.executeCommand("snippetbox.toolbox");
+                    break;
+                }
+                case "startListen": {
+                    if (!keywords) {
+                      keywords = data.value; // set keywords the first time
+                    }
+                    vscode.commands.executeCommand("snippetbox.listen");
+                    ToolboxPanel.getPanelWebview()?.postMessage({
+                        type: "setting",
+                        value: "startListen",
+                    });
+                    break;
+                }
+                case "stopListen": {
+                    vscode.commands.executeCommand("snippetbox.stopListen");
+                    ToolboxPanel.getPanelWebview()?.postMessage({
+                        type: "setting",
+                        value: "stopListen",
+                    });
+                    break;
+                }
+                case "startNotifications": {
+                    ToolboxPanel.getPanelWebview()?.postMessage({
+                        type: "setting",
+                        value: "startNotifications",
+                    });
+                    break;
+                }
+                case "stopNotifications": {
+                    ToolboxPanel.getPanelWebview()?.postMessage({
+                        type: "setting",
+                        value: "stopNotifications",
+                    });
+                    break;
+                }
                 case "logout": {
                     TokenManager.setToken("");
                     break;
@@ -58,12 +100,12 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                     vscode.window.showErrorMessage(data.value);
                     break;
                 }
-                case "toolbox": {
-                    vscode.commands.executeCommand("snippetbox.toolbox");
-                    break;
-                }
             }
         });
+    }
+
+    public static getWebview() {
+        return SidebarProvider.sidebarWebview;
     }
 
     public revive(panel: vscode.WebviewView) {

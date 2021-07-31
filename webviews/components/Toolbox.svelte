@@ -21,6 +21,7 @@
   let favorites: Array<Ref> = Ref.getAllFavorites();
   let keywords = JSON.stringify(Ref.getAllKeywords()); // could prob replace this with Ref.keywords
   let isVisible: boolean;
+  let notifications: boolean;
 
     // will be called every time any variable in here changes
     // $: {
@@ -120,6 +121,22 @@
                   case "visible":
                    isVisible = message.value;
                   break;
+                  case "setting":
+                    switch (message.value) {
+                      case "startListen":
+                        listening = true;
+                        break;
+                      case "stopListen":
+                        listening = false;
+                        break;
+                      case "startNotifications":
+                        notifications = true;
+                        break;
+                      case "stopNotifications":
+                        notifications = false;
+                        break;
+                    }
+                    break;
             }
 
         });
