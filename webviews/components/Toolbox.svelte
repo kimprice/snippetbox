@@ -19,10 +19,12 @@
   let listening: boolean = false;
   let isSearchPage: boolean = true;
   let favorites: Array<Ref> = Ref.getAllFavorites();
-  let keywords = JSON.stringify(Ref.getAllKeywords());
+  let keywords = JSON.stringify(Ref.getAllKeywords()); // could prob replace this with Ref.keywords
+  let isVisible: boolean;
+  let notifications: boolean = true;
+
     // will be called every time any variable in here changes
     // $: {
-        //Maybe searchResults should be here
     //     tsvscode.setState({
     //         text: text,
     //     })
@@ -89,24 +91,52 @@
         window.addEventListener("message", async (event) => {
             const message = event.data; // The json data that the extension sent
             switch (message.type) {
-                case "newRef":
-                    // saveRef(message.value);
-                    break;
                 case "transcript":
                   // search through Refs with keywords
                   listenSearch(message.value);
                   // TODO: also show notifications if the toolbox is hidden
-                  if (!isSearchPage && listening) { // if not on search page show as notifications
+                  if (listening && notifications && (!isSearchPage || !isVisible)) { // if not on search page show as notifications
                     // only show new resources so it is not overwhelming/annoying
                     for (let i = 0; i < listenResults.length; i++) {
                       if (listenResults[i].isNew()) {
                         // send message to extension
-                        tsvscode.postMessage({type: 'newRef', value: listenResults[i].getSourceName()});
+                        tsvscode.postMessage({type: 'newRef', value: `${listenResults[i].getSourceName()}-${listenResults[i].getId()}`});
                         listenResults[i].setNotNew();
                       }
                     }
                   }
                   break;
+                  case "newRef":
+                    // saveRef(message.value);
+                    const params = message.value.split("-");
+                    if (params[0] === "search") {
+                      isSearchPage = true;
+                      listenResults = listenResults; // rerender
+                    } else if (params[0] === "favorites") {
+                      isSearchPage = false;
+                      Ref.getRefById(params[1]).toggleSaveStatus(true);
+                      favorites = Ref.getAllFavorites(); // need assignment to trigger rerender of svelte component
+                    }
+                    break;
+                  case "visible":
+                   isVisible = (message.value === "true");
+                  break;
+                  case "setting":
+                    switch (message.value) {
+                      case "startListen":
+                        listening = true;
+                        break;
+                      case "stopListen":
+                        listening = false;
+                        break;
+                      case "startNotifications":
+                        notifications = true;
+                        break;
+                      case "stopNotifications":
+                        notifications = false;
+                        break;
+                    }
+                    break;
             }
 
         });
@@ -195,13 +225,17 @@
     outline: 0px;
   }
 
+  .onOff {
+    padding: 3px 5px;
+  }
+
 </style>
 
 <div>
   <h3>Listening is</h3>
   {#if listening}
     <!-- svelte-ignore missing-declaration -->
-    <button on:click={()=> {
+    <button class="onOff" on:click={()=> {
       // send message to extension
       tsvscode.postMessage({type: 'stopListen', value: undefined});
       listening = false; // might want to do this after getting confirmation?
@@ -209,7 +243,7 @@
     
   {:else}
     <!-- svelte-ignore missing-declaration -->
-    <button title="Turn on for suggested references" on:click={()=> {
+    <button class="onOff" title="Turn on for suggested references" on:click={()=> {
       // send message to extension
       tsvscode.postMessage({type: 'startListen', value: keywords});
       listening = true;

@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
-
-export let keywords = "";
+import { SidebarProvider } from "./SidebarProvider";
 
 export class ToolboxPanel {
   /**
@@ -10,6 +9,8 @@ export class ToolboxPanel {
   public static currentPanel: ToolboxPanel | undefined;
 
   public static readonly viewType = "toolbox";
+
+  public static keywords = ""; // TODO make private and add getter/setter
 
   private readonly _panel: vscode.WebviewPanel;
   private readonly _extensionUri: vscode.Uri;
@@ -28,9 +29,10 @@ export class ToolboxPanel {
     // If we already have a panel, show it.
     if (ToolboxPanel.currentPanel) {
       ToolboxPanel.currentPanel._panel.reveal(column);
-      ToolboxPanel.currentPanel._update();
+      // ToolboxPanel.currentPanel._update(); removed to prevent panel from being reinitiated
       return;
     }
+
 
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
@@ -76,6 +78,12 @@ export class ToolboxPanel {
     // Listen for when the panel is disposed
     // This happens when the user closes the panel or when the panel is closed programatically
     this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
+    this._panel.onDidChangeViewState(() => {
+        this._panel.webview.postMessage({
+          type: "visible",
+          value: this._panel.visible,
+        });
+    });
 
     // // Handle messages from the webview
     // this._panel.webview.onDidReceiveMessage(
@@ -112,20 +120,43 @@ export class ToolboxPanel {
     webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
         case "startListen": {
-          if (!keywords) {
-            keywords = data.value; // set keywords the first time
+          if (!ToolboxPanel.keywords) {
+            ToolboxPanel.keywords = data.value; // set keywords the first time
           }
           vscode.commands.executeCommand("snippetbox.listen");
+          SidebarProvider.getWebview()?.postMessage({
+            type: "listening",
+            value: "on",
+          });
           break;
         }
         case "stopListen": {
           vscode.commands.executeCommand("snippetbox.stopListen");
+          SidebarProvider.getWebview()?.postMessage({
+            type: "listening",
+            value: "off",
+          });
           break;
         }
 
         case "newRef": {
           // console.log("toolbox Panel received new Ref!");
-          vscode.window.showInformationMessage(`New Resource: ${data.value}`);
+          const params = data.value.split("-");
+          const selection = await vscode.window.showInformationMessage(`New Resource: ${params[0]}`, "Open", "Add to Favorites");
+          let page = undefined;
+          if (selection === "Open") {
+            page = "search";
+          } else if (selection === "Add to Favorites") {
+            page = "favorites";
+          }
+          page = `${page}-${params[1]}`;
+          if (this._extensionUri) {
+            ToolboxPanel.createOrShow(this._extensionUri); // should show what already exists
+            ToolboxPanel.getPanelWebview()?.postMessage({
+                type: "newRef",
+                value: page,
+              });
+          }
           break;
         }
 
