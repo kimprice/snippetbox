@@ -20,8 +20,9 @@
   let isSearchPage: boolean = true;
   let favorites: Array<Ref> = Ref.getAllFavorites();
   let keywords = JSON.stringify(Ref.getAllKeywords()); // could prob replace this with Ref.keywords
-  let isVisible: boolean;
+  let isVisible: boolean= true;
   let notifications: boolean = true;
+  let previousNumListenResults = 0; // keep track to filter out old notifications
 
     // will be called every time any variable in here changes
     // $: {
@@ -81,6 +82,7 @@
     }
 
     function listenSearch(searchString: string) {
+      previousNumListenResults = listenResults.length;
       searchRefs(searchString, true);
       listenResults = Ref.getRecentIdentifiedBySpeech();
       listenResults.sort((a, b) => compareDates(a.getTimeLastHeard(),b.getTimeLastHeard()));
@@ -97,7 +99,7 @@
                   // TODO: also show notifications if the toolbox is hidden
                   if (listening && notifications && (!isSearchPage || !isVisible)) { // if not on search page show as notifications
                     // only show new resources so it is not overwhelming/annoying
-                    for (let i = 0; i < listenResults.length; i++) {
+                    for (let i = 0; i < (listenResults.length - previousNumListenResults); i++) {
                       if (listenResults[i].isNew()) {
                         // send message to extension
                         tsvscode.postMessage({type: 'newRef', value: `${listenResults[i].getSourceName()}-${listenResults[i].getId()}`});
@@ -309,7 +311,10 @@
                 </button>
               {/if}
             
-            <button><TrashIcon/></button>
+            <button title="Remove from View" on:click={() => {
+              manualResults = manualResults.filter(reference => reference !== result);
+              listenResults = listenResults.filter(reference => reference !== result);
+            }}><TrashIcon/></button>
           </div>
         {#if result.isOpen()}
           {#each result.getInfoToDisplay() as info}
@@ -357,7 +362,10 @@
               <StarFullIcon/>
             </button>
           {/if}
-          <button><TrashIcon/></button>
+          <button title="Remove from View" on:click={() => {
+            listenResults = listenResults.filter(reference => reference !== result);
+            manualResults = manualResults.filter(reference => reference !== result);
+          }}><TrashIcon/></button>
         </div>
       {#if result.isOpen()}
         {#each result.getInfoToDisplay() as info}
@@ -392,7 +400,6 @@
           }}>
             <StarFullIcon/>
           </button>
-          <button><TrashIcon/></button>
         </div>
       {#if result.isOpen()}
         {#each result.getInfoToDisplay() as info}

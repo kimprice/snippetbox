@@ -1,7 +1,6 @@
 <script lang="ts">
 import { onMount } from "svelte";
 import { keywords } from "../references";
-import type { State } from "../types";
 // import Todos from "./Todos.svelte";
 
     // let accessToken = '';
@@ -14,7 +13,6 @@ import type { State } from "../types";
     let listenSettingOn = lastState?.listenSettingOn || false;
     let notificationsSettingOn = lastState?.notificationsSettingOn || true;
     let toolboxInitiated = lastState?.toolboxInitiated || false;
-    let state: State = {listenSettingOn, notificationsSettingOn, toolboxInitiated};
 
     // will be called every time any variable in here changes
     $: {
