@@ -160,7 +160,6 @@
 <style>
   h3 {
     display: inline-block;
-    cursor: hand;
     margin: 1px;
   }
 
@@ -190,6 +189,11 @@
     margin-top: 0.5em;
   }
 
+  .referenceTitleBar {
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+
   .menuGroup {
     float: right;
     /* padding-bottom: 0.5em;  this was creating an issue on the favorites tab */
@@ -211,6 +215,9 @@
 
   .iconGroup {
     float: right;
+    display: inline-block;
+    background-color: var(--vscode-editor-background);
+    margin-left: 2px;
   }
 
   .iconGroup > button {
@@ -278,6 +285,7 @@
     </form>
     {#each manualResults as result}
       <div class="list">
+        <div class="referenceTitleBar">
           <button class="chevron" on:click={()=> {
             result.toggleOpenOrClose();
             result = result; // need assignment to trigger rerender of svelte component
@@ -315,21 +323,23 @@
               manualResults = manualResults.filter(reference => reference !== result);
               listenResults = listenResults.filter(reference => reference !== result);
             }}><TrashIcon/></button>
-          </div>
+          </div> <!-- end iconGroup -->
+        </div> <!-- end referenceTitleBar -->
         {#if result.isOpen()}
           {#each result.getInfoToDisplay() as info}
           <p class="info">{info}</p>
           {/each}
         {/if}
-      </div>
+      </div> <!-- end list -->
     {/each}
-  </div>
+  </div> <!-- end searchGroup -->
 
   <div class="listenGroup">
     {#if (listening || (listenResults.length > 0))}
       <h3>Suggested references:</h3>
       {#each listenResults as result}
     <div class="list">
+      <div class="referenceTitleBar">
       <button class="chevron" on:click={()=> {
           result.toggleOpenOrClose();
           listenResults = listenResults; // need assignment to trigger rerender of svelte component
@@ -366,20 +376,22 @@
             listenResults = listenResults.filter(reference => reference !== result);
             manualResults = manualResults.filter(reference => reference !== result);
           }}><TrashIcon/></button>
-        </div>
+        </div> <!-- end iconGroup -->
+      </div> <!-- end referenceTitleBar -->
       {#if result.isOpen()}
         {#each result.getInfoToDisplay() as info}
         <p class="info">{info}</p>
         {/each}
       {/if}
-    </div>
+    </div> <!-- end list -->
   {/each}
     {/if}
-  </div>
+  </div> <!-- end listenGroup -->
 {:else}
 <!-- Favorites Page -->
   {#each favorites as result}
     <div class="list">
+      <div class="referenceTitleBar">
       <button class="chevron" on:click={()=> {
           result.toggleOpenOrClose();
           favorites = Ref.getAllFavorites(); // need assignment to trigger rerender of svelte component
@@ -400,13 +412,14 @@
           }}>
             <StarFullIcon/>
           </button>
-        </div>
+        </div> <!-- end iconGroup -->
+      </div> <!-- end referenceTitleBar -->
       {#if result.isOpen()}
         {#each result.getInfoToDisplay() as info}
         <p class="info">{info}</p>
         {/each}
       {/if}
-    </div>
+    </div> <!-- end list -->
   {/each}
 
 {/if}
