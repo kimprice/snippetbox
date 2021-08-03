@@ -1,6 +1,7 @@
 <script lang="ts">
 import { onMount } from "svelte";
 import { keywords } from "../references";
+import { STUDY_PW } from "../participantPW";
 // import Todos from "./Todos.svelte";
 
     // let accessToken = '';
@@ -13,6 +14,8 @@ import { keywords } from "../references";
     let listenSettingOn = lastState?.listenSettingOn || false;
     let notificationsSettingOn = lastState?.notificationsSettingOn || true;
     let toolboxInitiated = lastState?.toolboxInitiated || false;
+    let locked = false; // TODO change to true before starting study
+    let pwText = "";
 
     // will be called every time any variable in here changes
     $: {
@@ -94,6 +97,18 @@ import { keywords } from "../references";
             console.log(`clicked contact-after, state page: ${state.page}`);
         }}>go to contact</button> -->
         <!-- svelte-ignore missing-declaration -->
+    {#if locked}
+        <form
+        on:submit|preventDefault={async () => {
+            if (pwText === STUDY_PW) { // prevention of toolbox use by participants before use
+                locked = false;
+            }
+            pwText = "";
+        }}
+        >
+        <input placeholder="Study password" type="password" bind:value={pwText} />
+        </form>
+    {:else}
         <button class="openToolbox" on:click={() => {
             tsvscode.postMessage({type: 'toolbox', value: undefined});
             toolboxInitiated = true;
@@ -139,6 +154,7 @@ import { keywords } from "../references";
         {/if}
     </div>
     {/if}
+    {/if} <!-- end of locked -->
     <!-- {:else}
         <a href="https://scholar.google.com/citations?user=AVSNW8gAAAAJ&hl=en&oi=ao">Google Scholar Page</a>
         <button on:click={() => {

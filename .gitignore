@@ -7,3 +7,4 @@ speechrecext-85e9d5abb603.json
 src/private.ts
 .DS_Store
 workspace.code-workspace
+webviews/participantPW.ts

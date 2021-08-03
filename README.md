@@ -14,7 +14,10 @@ For example if there is an image subfolder under your extension project workspac
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+For the extension to have access to your microphone, SoX must be installed:
+    For Mac OS: brew install sox
+    For most linux disto's: sudo apt-get install sox libsox-fmt-all 
+    see https://www.npmjs.com/package/node-record-lpcm16#dependencies for more detail
 
 ## Extension Settings
 
