@@ -1,7 +1,7 @@
 {
 	"name": "snippetbox",
-	"displayName": "SnippetBox",
-	"description": "A toolbox of basic code snippets and documentation for Java",
+	"displayName": "DECKS",
+	"description": "Dialogue-Enabled Coding Knowledge Support",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.52.0"
@@ -24,8 +24,8 @@
 			"activitybar": [
 				{
 					"id": "snippetbox-sidebar-view",
-					"title": "SnippetBox",
-					"icon": "media/book.svg"
+					"title": "DECKS",
+					"icon": "media/star.svg"
 				}
 			]
 		},
@@ -34,9 +34,9 @@
 				{
 					"type": "webview",
 					"id": "snippetbox-sidebar",
-					"name": "SnippetBox",
-					"icon": "media/book.svg",
-					"contextualTitle": "SnippetBox"
+					"name": "DECKS",
+					"icon": "media/star.svg",
+					"contextualTitle": "DECKS"
 				}
 			]
 		},
@@ -81,7 +81,7 @@
 			{
 				"command": "snippetbox.toolbox",
 				"category": "Adaptive Tool",
-				"title": "Toolbox"
+				"title": "DECKS"
 			},
 			{
 				"command": "snippetbox.refresh",

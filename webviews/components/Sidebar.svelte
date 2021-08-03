@@ -80,6 +80,10 @@ import { STUDY_PW } from "../participantPW";
         margin: 1px;
     }
 
+    .DECKS {
+        text-align: center;
+    }
+
 </style>
 
 <!-- {#if loading}
@@ -97,6 +101,8 @@ import { STUDY_PW } from "../participantPW";
             console.log(`clicked contact-after, state page: ${state.page}`);
         }}>go to contact</button> -->
         <!-- svelte-ignore missing-declaration -->
+    
+    <h3 class="DECKS"><strong>D</strong>ialogue-<strong>E</strong>nabled <strong>C</strong>oding <strong>K</strong>nowledge <strong>S</strong>upport</h3>
     {#if locked}
         <form
         on:submit|preventDefault={async () => {
@@ -109,6 +115,7 @@ import { STUDY_PW } from "../participantPW";
         <input placeholder="Study password" type="password" bind:value={pwText} />
         </form>
     {:else}
+        <!-- svelte-ignore missing-declaration -->
         <button class="openToolbox" on:click={() => {
             tsvscode.postMessage({type: 'toolbox', value: undefined});
             toolboxInitiated = true;
@@ -135,7 +142,7 @@ import { STUDY_PW } from "../participantPW";
         {/if}
     </div>
     <div>
-        <h3>Notifications: </h3>
+        <h3 title="Listening must be on to receive notifications">Notifications: </h3>
         {#if notificationsSettingOn}
             <!-- svelte-ignore missing-declaration -->
             <button class="settingButton" on:click={()=> {

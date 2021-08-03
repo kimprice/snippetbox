@@ -37,7 +37,7 @@ export class ToolboxPanel {
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
       ToolboxPanel.viewType,
-      "Toolbox",
+      "DECKS Toolbox",
       vscode.ViewColumn.Two,
       {
         // Enable javascript in the webview

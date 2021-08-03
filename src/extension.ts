@@ -110,7 +110,7 @@ export function activate(context: vscode.ExtensionContext) {
 			// create and show a new webview
 			const panel = vscode.window.createWebviewPanel(
 				'snippetBox', // used internally to identify type fo webview
-				'SnippetBox', // Title of panel displayed to the user
+				'DECKS', // Title of panel displayed to the user
 				vscode.ViewColumn.One, // editor column to show new webview panel
 				{
 					// enableScripts: true
