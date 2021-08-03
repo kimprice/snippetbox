@@ -23,6 +23,8 @@
   let isVisible: boolean= true;
   let notifications: boolean = true;
   let previousNumListenResults = 0; // keep track to filter out old notifications
+  let noSearchResults = false;
+  let lastSearchString: string = "";
 
     // will be called every time any variable in here changes
     // $: {
@@ -238,6 +240,10 @@
     padding: 3px 5px;
   }
 
+  .noFavorites {
+    margin-top: 10px;
+  }
+
 </style>
 
 <div>
@@ -278,11 +284,16 @@
     <form
       on:submit|preventDefault={async () => {
         manualResults = searchRefs(text); // this will update searchResults
+        lastSearchString = text;
         text = "";
+        noSearchResults = (manualResults.length === 0);
       }}
     >
       <input placeholder="Search references" bind:value={text} />
     </form>
+    {#if noSearchResults}
+    <h5>No references found for "{lastSearchString}"</h5>
+    {/if}
     {#each manualResults as result}
       <div class="list">
         <div class="referenceTitleBar">
@@ -335,8 +346,12 @@
   </div> <!-- end searchGroup -->
 
   <div class="listenGroup">
+    
+    {#if !listening && listenResults.length === 0} 
+      <h5> Turn on listening for suggested references.</h5>
+    {/if}
     {#if (listening || (listenResults.length > 0))}
-      <h3>Suggested references:</h3>
+    <h3>Suggested references:</h3>
       {#each listenResults as result}
     <div class="list">
       <div class="referenceTitleBar">
@@ -389,6 +404,12 @@
   </div> <!-- end listenGroup -->
 {:else}
 <!-- Favorites Page -->
+  {#if favorites.length === 0} 
+    <h5 class="noFavorites" 
+    title="To add references to your favorites, go to the Search page for suggested references and click the star icon for the reference."> 
+    You have no favorited references.</h5>
+    <!-- <h5>To add references to your favorites, go to the Search page for suggested references and click the star icon for the reference.</h5> -->
+  {/if}
   {#each favorites as result}
     <div class="list">
       <div class="referenceTitleBar">
