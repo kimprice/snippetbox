@@ -72,6 +72,7 @@ import { STUDY_PW } from "../participantPW";
 
     .openToolbox {
         width: 100%;
+        margin-bottom: 10px;
     }
 
     .settingButton {
@@ -82,6 +83,7 @@ import { STUDY_PW } from "../participantPW";
 
     .DECKS {
         text-align: center;
+        margin-bottom: 10px;
     }
 
 </style>
