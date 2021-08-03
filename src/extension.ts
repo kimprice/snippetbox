@@ -42,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// $ convention below is for icon and name in parenthesis is from codicons
 	item.text = "$(file-code) Add Todo";
 	item.command = "snippetbox.add";
-	item.show();
+	// item.show();
 
 	context.subscriptions.push(
 	  vscode.window.registerWebviewViewProvider(
