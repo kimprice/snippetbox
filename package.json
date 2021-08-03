@@ -40,6 +40,38 @@
 				}
 			]
 		},
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "snippetbox.open",
+					"when": "false"
+				},
+				{
+					"command": "snippetbox.toolbox",
+					"when": "false"
+				},
+				{
+					"command": "snippetbox.refresh",
+					"when": "false"
+				},
+				{
+					"command": "snippetbox.add",
+					"when": "false"
+				},
+				{
+					"command": "snippetbox.authenticate",
+					"when": "false"
+				},
+				{
+					"command": "snippetbox.listen",
+					"when": "false"
+				},
+				{
+					"command": "snippetbox.stopListen",
+					"when": "false"
+				}
+			]
+		},
 		"commands": [
 			{
 				"command": "snippetbox.open",
