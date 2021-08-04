@@ -6,7 +6,8 @@
 //
 //      http://www.apache.org/licenses/LICENSE-2.0
 
-import { googleSpeechCredentials } from "./private";
+import { extContext } from "./extension";
+import * as vscode from "vscode";
 import { ToolboxPanel } from "./ToolboxPanel";
 import * as readline from 'readline';
 
@@ -18,7 +19,7 @@ const speech = require('@google-cloud/speech');
 const { Writable: WRITABLE } = require('stream');
 
 // TODO - properly connect to environment variables
-process.env.GOOGLE_APPLICATION_CREDENTIALS = googleSpeechCredentials;
+process.env.GOOGLE_APPLICATION_CREDENTIALS = "";
 
 // Creates a client
 const client = new speech.SpeechClient();
@@ -53,6 +54,9 @@ export class SpeechClient {
   private static isConfigured = false;
 
   static setSpeechConfiguration(keywords?: string[]) {
+    // Set API Key
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = vscode.Uri.joinPath(extContext.extensionUri, "speechrecext.json").fsPath;
+
     // Set configuration
     request = {
       config: {

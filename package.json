@@ -1,6 +1,7 @@
 {
 	"name": "snippetbox",
 	"displayName": "DECKS",
+	"publisher": "KimYing",
 	"description": "Dialogue-Enabled Coding Knowledge Support",
 	"version": "0.0.1",
 	"engines": {

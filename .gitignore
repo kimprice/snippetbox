@@ -8,3 +8,4 @@ src/private.ts
 .DS_Store
 workspace.code-workspace
 webviews/participantPW.ts
+speechrecext.json
