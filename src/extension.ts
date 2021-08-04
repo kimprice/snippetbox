@@ -141,11 +141,11 @@ export function activate(context: vscode.ExtensionContext) {
 						keywords = SidebarProvider.keywords;
 					}
 					console.log(JSON.parse(keywords)); // error here if turn listen on from settings
-					await SpeechClient.startSpeechRecognition(JSON.parse(keywords));
+					SpeechClient.startSpeechRecognition(JSON.parse(keywords));
 					speechClientInitiated = true;
 				}
 				else {
-					await SpeechClient.startSpeechRecognition();
+					SpeechClient.startSpeechRecognition();
 				}
 				
 			} catch (err) {
