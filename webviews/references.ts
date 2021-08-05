@@ -304,7 +304,7 @@ function initiateReferenceLibrary() {
         ],
     );
 
-    new Ref( // 14
+    new Ref( // 15
         "Operators: Equals",
         ["operator", "symbol", "operators", "equal", "equals", "check"],
         "https://www.tutorialspoint.com/java/java_basic_operators.htm",
@@ -316,7 +316,7 @@ function initiateReferenceLibrary() {
         ],
     );
 
-    new Ref( // 15
+    new Ref( // 16
         "Operators: Less Than",
         ["operator", "operators", "less", "smaller", "check", "compare"],
         "https://www.tutorialspoint.com/java/java_basic_operators.htm",
@@ -327,7 +327,7 @@ function initiateReferenceLibrary() {
         ],
     );
 
-    new Ref( // 16
+    new Ref( // 17
         "Operators: Greater Than",
         ["operator", "operators", "greater", "larger", "bigger", "check", "compare"],
         "https://www.tutorialspoint.com/java/java_basic_operators.htm",
@@ -338,7 +338,7 @@ function initiateReferenceLibrary() {
         ],
     );
 
-    new Ref( // 17
+    new Ref( // 18
         "Operators: AND",
         ["operator", "operators", "logical", "check", "both", "logic"],
         "https://www.geeksforgeeks.org/java-logical-operators-with-examples/",
@@ -349,7 +349,7 @@ function initiateReferenceLibrary() {
         ],
     );
 
-    new Ref( // 18
+    new Ref( // 19
         "Operators: OR",
         ["operator", "logical", "operators", "logic", "check"],
         "https://www.geeksforgeeks.org/java-logical-operators-with-examples/",
@@ -360,19 +360,93 @@ function initiateReferenceLibrary() {
         ],
     );
 
-    // Exceptions/Errors
+    // Regular Expressions
 
+    new Ref( // 20
+        "Regular Expressions",
+        ["regular", "expression", "regex", "import"],
+        "https://www.w3schools.com/Java/java_regex.asp",
+        [
+        "Regular expressions (RegEx) are a sequence of characters that form a pattern that can be used to search for data within text.",
+        "To use regular expressions, include the following import statements:", 
+        "import java.util.regex.Matcher;",
+        "import java.util.regex.Pattern;",
+        ],
+    );
 
-    new Ref(
+    new Ref( // 21
+        "RegEx: Pattern",
+        ["regular", "expression", "regex", "pattern"],
+        "https://www.w3schools.com/Java/java_regex.asp",
+        [
+        "The pattern class is used to define a pattern that can be later used in a search.",
+        "Pattern pattern = Pattern.compile([a-z]);", 
+        "This example defines a pattern that has a lowercase character.",
+        "Click on the link button for more patterns."
+        ],
+    );
+
+    new Ref( // 22
+        "RegEx: Matcher",
+        ["regular", "expression", "regex", "matcher", "match"],
+        "https://www.w3schools.com/Java/java_regex.asp",
+        [
+        "The matcher class is used to search for the pattern within the given string.",
+        "Matcher matcher = pattern.matcher(\"check this string\")", 
+        "To check if a string contains the pattern, use the find method.", 
+        "boolean matchFound = matcher.find();",
+        ],
+    );
+
+    // ASCII
+
+    new Ref( // 23
         "ASCII Table",
-        ["ascii", "table", "value"],
+        ["ascii", "table", "value", "uppercase", "lowercase", "number", "letter"],
         "http://www.asciitable.com/",
         [
+        "ASCII values are the numerical representation of a character.",
         "ASCII values for A-Z are 65-90",
         "ASCII values for a-z are 97-122", 
         "ASCII values for 0-9 are 48-57"
         ],
     );
+
+    new Ref( // 24
+        "ASCII: Find Value",
+        ["ascii", "table", "value", "uppercase", "lowercase", "number", "letter"],
+        "https://www.javatpoint.com/how-to-print-ascii-value-in-java",
+        [
+        "To find the numerical value of a given character you must type case a char variable to an int variable",
+        "char letter = 'a';",
+        "int value = letter; // value is the ASCII number for a", 
+        ],
+    );
+
+    // Output
+    
+    new Ref( // 25
+        "Output / Print",
+        ["output", "print", "console", "system", "display"],
+        "https://www.javatpoint.com/system-out-println-in-java",
+        [
+        "System.out.print() displays the contents in the parentheses to the user.",
+        "System.out.println() does the same but also prints a new line after.",
+        "System.out.print(\"Message to be printed\")", 
+        ],
+    );
+
+    new Ref( // 26
+        "Print: Multi-line",
+        ["output", "print", "console", "system", "display", "multiple", "long"],
+        "https://stackoverflow.com/questions/27408889/java-making-system-out-println-argument-span-multiple-lines/27408961",
+        [
+        "To print out a string on multiple lines in one statment you need to add \\n at the end of each string line. ",
+        "System.out.println(\"This is the first line \\n\" + \"This is the second line\");",
+        ],
+    );
+
+
     new Ref(
         "Character Methods",
         ["character", "digit", "letter", "char"],
@@ -385,14 +459,7 @@ function initiateReferenceLibrary() {
         ],
     );
     
-    new Ref(
-        "Regular Expressions",
-        ["regular", "expression", "regex", "match"],
-        "https://www.w3schools.com/java/java_regex.asp#:~:text=Metacharacters%20are%20characters%20with%20a%20special%20meaning%3A%20,string%20a%20...%20%204%20more%20rows%20",
-        [
-        "Regex",
-        "import java.util.regex.Matcher;",
-        "import java.util.regex.Pattern;"
-        ],
-    );
+    
+
+    // Exceptions/Errors
 }
