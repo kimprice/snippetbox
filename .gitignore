@@ -9,3 +9,4 @@ src/private.ts
 workspace.code-workspace
 webviews/participantPW.ts
 speechrecext.json
+webviews/ExtensionReferences.xlsx
