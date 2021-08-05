@@ -1,8 +1,9 @@
 export class Ref {
     private static numRefs: number = 0;
     private static allRefs: Array<Ref> = [];
+    private static libraryInitiated: boolean = false;
     private id: number;
-    private sourceName: string;
+    private refName: string;
     private sourceLink: string;
     private infoToDisplay: string[];
     private keywords: string[];
@@ -13,9 +14,9 @@ export class Ref {
     private identifiedFromSpeech: boolean = false;
     private timeLastHeard: Date = new Date(); // sets date when initialized, but won't be used
 
-    public constructor (sourceName: string, sourceLink: string, infoToDisplay: string[], keywords: string[], example?: string) {
+    public constructor (refName: string, keywords: string[], sourceLink: string, infoToDisplay: string[], example?: string) {
         this.id = Ref.numRefs++;
-        this.sourceName = sourceName;
+        this.refName = refName;
         this.sourceLink = sourceLink;
         this.infoToDisplay = infoToDisplay;
         this.keywords = keywords;
@@ -28,7 +29,7 @@ export class Ref {
     }
 
     public getSourceName() {
-        return this.sourceName;
+        return this.refName;
     }
 
     public getSourceLink() {
@@ -103,6 +104,9 @@ export class Ref {
     }
 
     public static getAllRefs(): Ref[] {
+        if (!Ref.libraryInitiated) {
+            initiateReferenceLibrary();
+        }
         return Ref.allRefs;
     }
 
@@ -136,37 +140,88 @@ export class Ref {
     }
 
  };
-let ref1 = new Ref(
-    "ASCII Table",
-    "http://www.asciitable.com/",
-    [
-    "ASCII values for A-Z are 65-90",
-    "ASCII values for a-z are 97-122", 
-    "ASCII values for 0-9 are 48-57"
-    ],
-    ["ascii", "table", "value"],
-);
-let ref2 = new Ref(
-    "Character Methods",
-    "https://docs.oracle.com/javase/7/docs/api/java/lang/Character.html",
-    [
-    "isDigit(char ch)",
-    "Determines if the specified character is a digit, returns a boolean.",
-    "isUpperCase(char ch)",
-    "Determines if the specified character is an uppercase character, returns a boolean."
-    ],
-    ["character", "digit", "letter", "char"],
-);
 
-let ref3 = new Ref(
-    "Regular Expressions",
-    "https://www.w3schools.com/java/java_regex.asp#:~:text=Metacharacters%20are%20characters%20with%20a%20special%20meaning%3A%20,string%20a%20...%20%204%20more%20rows%20",
-    [
-    "Regex",
-    "import java.util.regex.Matcher;",
-    "import java.util.regex.Pattern;"
-    ],
-    ["regular", "expression", "regex", "match"],
-);
-export let references: Array<Ref> = [ref1, ref2, ref3];
 export let keywords = JSON.stringify(Ref.getAllKeywords());
+
+function initiateReferenceLibrary() {
+    new Ref( // 1
+        "Scanner",
+        ["scanner", "input", "read"],
+        "https://www.geeksforgeeks.org/scanner-class-in-java/",
+        [
+        "You can use the Scanner class to obtain the input of primative data types (int, double, etc.) and strings.",
+        ],
+    );
+    new Ref( // 2
+        "Scanner: Import",
+        ["scanner", "input", "read", "import"],
+        "https://www.programiz.com/java-programming/scanner",
+        [
+        "To use the scanner class, the package must first be imported using: ",
+        "import java.util.Scanner;"
+        ],
+    );
+    new Ref( // 3
+        "Scanner: Methods",
+        ["scanner", "input", "read", "method", "methods"],
+        "https://www.w3schools.com/java/java_user_input.asp",
+        [
+        "The Scanner can read in different data types by using different Scanner methods. ",
+        "These methods are: nextBoolean(), nextByte(), nextDouble(), nextFloat(), nextInt(), nextLine(), nextLong(), nextShort()"
+        ],
+    );
+    new Ref( // 4
+        "Scanner: Declare",
+        ["scanner", "create", "read", "declare", "input", "stream"],
+        "https://www.programiz.com/java-programming/scanner",
+        [
+        "A Scanner object must first be created before it can be used to read input.",
+        "Scanners can read input from a variety of places such as the InputStream, a File, and a String.",
+        "To create a Scanner object to read user input, use:", 
+        "Scanner scannerName = new Scanner(System.in);"
+        ],
+    );
+    new Ref( // 5
+        "Scanner: User Input",
+        ["scanner", "user", "read", "input"],
+        "https://www.programiz.com/java-programming/scanner",
+        [
+        "Scanners can read in values from the user as strings, characters, integers, and doubles.",
+        "To read a String value from the user and set it to a String object use:",
+        "String stringName = scannerName.nextLine();", 
+        ],
+    );
+
+    new Ref(
+        "ASCII Table",
+        ["ascii", "table", "value"],
+        "http://www.asciitable.com/",
+        [
+        "ASCII values for A-Z are 65-90",
+        "ASCII values for a-z are 97-122", 
+        "ASCII values for 0-9 are 48-57"
+        ],
+    );
+    new Ref(
+        "Character Methods",
+        ["character", "digit", "letter", "char"],
+        "https://docs.oracle.com/javase/7/docs/api/java/lang/Character.html",
+        [
+        "isDigit(char ch)",
+        "Determines if the specified character is a digit, returns a boolean.",
+        "isUpperCase(char ch)",
+        "Determines if the specified character is an uppercase character, returns a boolean."
+        ],
+    );
+    
+    new Ref(
+        "Regular Expressions",
+        ["regular", "expression", "regex", "match"],
+        "https://www.w3schools.com/java/java_regex.asp#:~:text=Metacharacters%20are%20characters%20with%20a%20special%20meaning%3A%20,string%20a%20...%20%204%20more%20rows%20",
+        [
+        "Regex",
+        "import java.util.regex.Matcher;",
+        "import java.util.regex.Pattern;"
+        ],
+    );
+}
