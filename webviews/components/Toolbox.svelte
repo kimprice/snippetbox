@@ -61,17 +61,14 @@
       }
 
       let searchResults = [];
-      for (let i = 0; i<keywords.length; i++) {
-        for (let j = 0; j<references.length; j++) {
-          if (references[j].getKeywords().includes(keywords[i])) {
-            searchResults.push(references[j]);
-            if (fromSpeech) {
-              references[j].setOrUpdateIdentifiedBySpeech();
+      for (let i = 0; i < references.length; i++) { // go through all refs
+        if (references[i].getKeywords().some(item => keywords.includes(item))) { // some iterates through array
+          searchResults.push(references[i]);
+          if (fromSpeech) {
+              references[i].setOrUpdateIdentifiedBySpeech();
             } else {
-              references[j].setNotNew();
+              references[i].setNotNew();
             }
-            break;
-          }
         }
       }
       return searchResults;
