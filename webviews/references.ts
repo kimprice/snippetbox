@@ -446,20 +446,221 @@ function initiateReferenceLibrary() {
         ],
     );
 
+    // Sets
 
-    new Ref(
-        "Character Methods",
-        ["character", "digit", "letter", "char"],
-        "https://docs.oracle.com/javase/7/docs/api/java/lang/Character.html",
+    new Ref( // 27
+        "Sets: Declare",
+        ["set", "sets", "declare", "declaring", "initialize", "initializing", "import", "create"],
+        "https://www.geeksforgeeks.org/set-in-java/",
         [
-        "isDigit(char ch)",
-        "Determines if the specified character is a digit, returns a boolean.",
-        "isUpperCase(char ch)",
-        "Determines if the specified character is an uppercase character, returns a boolean."
+        "Sets are an unordered collection of objects in which duplicate elements cannot be stored.",
+        "The set interface can be imported using import java.util.*;",
+        "Set<Obj> setName = new HashSet<Obj>();",
         ],
     );
     
+    new Ref( // 28
+        "Sets: Contains",
+        ["set", "sets", "contains", "element", "check", "present"],
+        "https://www.geeksforgeeks.org/set-contains-method-in-java-with-examples/",
+        [
+        "The contains method checks whether a specific element is present within a set.",
+        "It returns true if the element is in the set, and false if it is not.",
+        "boolean inSet = setName.contains(element)",
+        ],
+    );
+
+    new Ref( // 29
+        "Sets: Add",
+        ["set", "sets", "add", "adding", "collection", "element"],
+        "https://www.geeksforgeeks.org/set-add-method-in-java-with-examples/",
+        [
+        "To add elements to a set, use the add() method.",
+        "Returns true or false, indicating if the element has been successfully added.",
+        "setName.add(element);",
+        ],
+    );
+
+    // Character
+
+    new Ref(
+        "Character Methods", // 30
+        ["character", "digit", "letter", "char", "method"],
+        "https://www.tutorialspoint.com/java/java_characters.htm",
+        [
+        "The character class contains methods for manipulating characters.",
+        "Some useful instance methods: isLetter(), isDigit(), isWhitespace(), isUpperCase(), isLowerCase(), toUpperCase(), toLowerCase(), toString()",
+        ],
+    );
+
+    new Ref(
+        "Character: isLetter()", // 31
+        ["character", "letter", "char", "method"],
+        "https://www.geeksforgeeks.org/character-class-java/",
+        [
+        "isLetter() returns true if the given character is a letter.",
+        "boolean result = Character.isLetter(charTested);",
+        ],
+    );
+
+    new Ref(
+        "Character: isDigit()", // 32
+        ["character", "digit", "char", "method", "number"],
+        "https://www.tutorialspoint.com/java/character_isdigit.htm",
+        [
+        "isDigit() returns true if the given character is a digit.",
+        "boolean result = Character.isDigit(charTested);",
+        ],
+    );
+
+    new Ref(
+        "Character: isUpperCase()", // 33
+        ["character", "uppercase", "char", "method", "capital"],
+        "https://www.tutorialspoint.com/java/character_isuppercase.htm",
+        [
+        "isUpperCase() returns true if the given character is an uppercase letter.",
+        "boolean result = Character.isUpperCase(charTested);",
+        ],
+    );
+
+    new Ref(
+        "Character: isLowerCase()", // 34
+        ["character", "lowercase", "char", "method", "small"],
+        "https://www.tutorialspoint.com/java/character_islowercase.htm",
+        [
+        "isLowerCase() returns true if the given character is a lowercase letter.",
+        "boolean result = Character.isLowerCase(charTested);",
+        ],
+    );
+
+    new Ref(
+        "Character: isWhiteSpace()", // 35
+        ["character", "space", "char", "method"],
+        "https://www.tutorialspoint.com/java/character_iswhitespace.htm",
+        [
+        "isWhiteSpace() returns true if the given character is a whitespace character.",
+        "Whitespace characters include the space character (\" \"), new line (\"\\n\"), etc.",
+        "boolean result = Character.isWhiteSpace(charTested);",
+        ],
+    );
+
+    // Conditionals
+
+    new Ref(
+        "If Statements", // 36
+        ["condition", "if", "case", "condition"],
+        "https://www.w3schools.com/java/java_conditions.asp",
+        [
+        "If statements are used to specify a block of code to be executed it the condition is true.",
+        "Condition statements can use the following operators: <, >, ==, !=, &&, ||",
+        "if (condition) { // code to be executed if condition is true }",
+        ],
+    );
+
+    new Ref(
+        "If Else Statements", // 37
+        ["condition", "if", "else", "condition"],
+        "https://www.w3schools.com/java/java_conditions.asp",
+        [
+        "Else if statements are used to test a new condition if the previous condition is false.",
+        "Else statements are used to run code when all previous conditions are false.",
+        "if (condition1) {",
+        "// code executed if condition1 is true",
+        "} else if (condition2) {",
+        "// code executed if condition1 is false and condition2 is true",
+        "} else { ",
+        "// code executed if condition1 and condition2 are false", 
+        "}",
+        ],
+    );
+
+    // Loops
     
+    new Ref(
+        "For Loop", // 38
+        ["loop", "for", "iterate"],
+        "https://www.w3schools.com/java/java_for_loop.asp",
+        [
+        "Use a for loop when you know how many times you want to loop through a block of code.",
+        "for (int i = 0; i < 3; i++) { // code }",
+        "The code in the brackets will run 3 times in the above example.",
+        ],
+    );
+
+    new Ref(
+        "While Loop", // 39
+        ["loop", "while", "iterate"],
+        "https://www.w3schools.com/java/java_while_loop.asp",
+        [
+        "Use a while loop to loop through a block of code while a condition is true.",
+        "while (condition) { // code }",
+        "The code in the brackets will run until the condition is false.",
+        ],
+    );
+    
+    // Arrays
+
+    new Ref(
+        "Arrays", // 40
+        ["array", "arrays", "iterate", "index", "element"],
+        "https://www.w3schools.com/java/java_arrays.asp",
+        [
+        "Arrays store multiple values in one variable.",
+        "To declare an array, use square brackets after the variable type:",
+        "int[] ages = {5, 17, 24, 16, 31};",
+        "Use the index to access elements in the array. The index starts at 0:",
+        "ages[1] // 17"
+        ],
+    );
+
+    new Ref(
+        "Array Iteration", // 41
+        ["array", "arrays", "iterate", "loop", "element"],
+        "https://www.w3schools.com/java/java_arrays.asp",
+        [
+        "Use a for loop to iterate through an array",
+        "for (int i = 0; i < array.length; i++) { ",
+        "System.out.print(array[i]); }",
+        ],
+    );
+
+    new Ref(
+        "Break", // 42
+        ["break", "loop", "exit", "stop"],
+        "https://www.w3schools.com/java/java_break.asp",
+        [
+        "The break statement is used to exit out of a loop:",
+        "for (int i = 0; i < array.length; i++) { ",
+        "if (array[i]) > 7) { break; } }",
+        "If the condition is true, it will exit out of the for loop and not run any more iterations."
+        ],
+    );
+
+    new Ref(
+        "Continue", // 43
+        ["continue", "loop", "exit", "stop", "iterate", "jump", "skip"],
+        "https://www.w3schools.com/java/java_break.asp",
+        [
+        "The continue statement is used to exit out of one iteration of a loop and continue to the next iteration:",
+        "for (int i = 0; i < 5; i++) { ",
+        "if (i == 3) { continue; }",
+        "System.out.print(i);}",
+        "The above code will print: 0124"
+        ],
+    );
 
     // Exceptions/Errors
+
+    new Ref(
+        "Exception: No Line Found", // 44
+        ["exception", "line", "found"],
+        "https://stackoverflow.com/questions/7209110/java-util-nosuchelementexception-no-line-found",
+        [
+        "java.util.NoSuchElementException: No line found",
+        "If you call nextLine() more times than the number of lines this exception will be thrown.",
+        "Before using nextLine(), check if there is a next line with hasNextLine().",
+        "while (scanner.hasNextLine())",
+        "{ str = scanner.nextLine(); }",
+        ],
+    );
 }
