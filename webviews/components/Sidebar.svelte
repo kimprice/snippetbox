@@ -2,19 +2,12 @@
 import { onMount } from "svelte";
 import { keywords } from "../references";
 import { STUDY_PW } from "../participantPW";
-// import Todos from "./Todos.svelte";
 
-    // let accessToken = '';
-    // let loading = true;
-    // let user: User | null = null;
-    // let lastState = tsvscode.getState();
-    // let page: "todos" | "contact" = lastState?.page || "todos";
-    // let text = lastState?.text || "";
     let lastState = tsvscode.getState();
     let listenSettingOn = lastState?.listenSettingOn || false;
     let notificationsSettingOn = lastState?.notificationsSettingOn || true;
     let toolboxInitiated = lastState?.toolboxInitiated || false;
-    let locked = false; //lastState?.locked || true; // TODO change to true before starting study
+    let locked = lastState?.locked || true; // TODO change to true before starting study
     let pwText = "";
 
     // will be called every time any variable in here changes
@@ -33,17 +26,6 @@ import { STUDY_PW } from "../participantPW";
         window.addEventListener("message", async (event) => {
             const message = event.data; // The json data that the extension sent
             switch (message.type) {
-                // case 'token':
-                //     accessToken = message.value;
-                //     const response = await fetch(`${apiBaseUrl}/me`, {
-                //         headers: {
-                //             authorization: `Bearer ${accessToken}`,
-                //         },
-                //     });
-                //     const data = await response.json();
-                //     user = data.user;
-                //     loading = false;
-                //     break;
                 case 'listening':
                     if (message.value === "on") {
                         listenSettingOn = true;
@@ -56,11 +38,7 @@ import { STUDY_PW } from "../participantPW";
                     locked = (message.value.charAt(1) === '1');
                     break;
             }
-        });
-
-        // tsvscode.postMessage({type: 'get-token', value: undefined});
-
-        
+        }); 
     });
 </script>
 
@@ -93,22 +71,6 @@ import { STUDY_PW } from "../participantPW";
     }
 
 </style>
-
-<!-- {#if loading}
-    <div>loading...</div>
-{:else if user} -->
-    <!-- <pre>{JSON.stringify(user, null, 2)}</pre> -->
-    <!-- {#if state.page === 'todos'}
-        <Todos {user} {accessToken} bind:text/>
-        <button on:click={() => {
-            console.log(`clicked contact, state page: ${state.page}`);
-            state = {
-                page: 'contact',
-            };
-            lastState.text = text;
-            console.log(`clicked contact-after, state page: ${state.page}`);
-        }}>go to contact</button> -->
-        <!-- svelte-ignore missing-declaration -->
     
     <h3 class="DECKS"><strong>D</strong>ialogue-<strong>E</strong>nabled <strong>C</strong>oding <strong>K</strong>nowledge <strong>S</strong>upport</h3>
     {#if locked}
@@ -172,27 +134,3 @@ import { STUDY_PW } from "../participantPW";
     </div>
     {/if}
     {/if} <!-- end of locked -->
-    <!-- {:else}
-        <a href="https://scholar.google.com/citations?user=AVSNW8gAAAAJ&hl=en&oi=ao">Google Scholar Page</a>
-        <button on:click={() => {
-            console.log(`clicked back, state page: ${state.page}`);
-            state = {
-                page: 'todos',
-                text: lastState.text,  
-            };
-            console.log(`clicked back-after, state page: ${state.page}`);
-        }}>go back</button>
-    {/if} -->
-    <!-- svelte-ignore missing-declaration -->
-    <!-- <button on:click={() => {
-        accessToken='';
-        user = null;
-        tsvscode.postMessage({type: 'logout', value: undefined});
-    }}>logout</button>
-{:else} -->
-    <!-- svelte-ignore missing-declaration -->
-    <!-- <button on:click={() => {
-        tsvscode.postMessage({type: 'authenticate', value: undefined});
-    }}>login with GitHub</button>
-{/if} -->
-
