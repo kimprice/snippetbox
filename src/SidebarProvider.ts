@@ -11,6 +11,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     _doc?: vscode.TextDocument;
     private static sidebarWebview: vscode.Webview;
     public static keywords = ""; // TODO make private and add getter/setter
+    private static notifications: boolean = true;
+    private static locked: boolean = true;
 
     constructor(private readonly _extensionUri: vscode.Uri) { }
 
@@ -28,11 +30,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
         webviewView.webview.onDidReceiveMessage(async (data) => {
             switch (data.type) {
-                case "toolbox": {
+                case "toolbox": 
                     vscode.commands.executeCommand("snippetbox.toolbox");
                     break;
-                }
-                case "startListen": {
+                case "startListen":
                     if (!SidebarProvider.keywords) {
                       SidebarProvider.keywords = data.value; // set keywords the first time
                     }
@@ -42,34 +43,31 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                         value: "startListen",
                     });
                     break;
-                }
-                case "stopListen": {
+                case "stopListen": 
                     vscode.commands.executeCommand("snippetbox.stopListen");
                     ToolboxPanel.getPanelWebview()?.postMessage({
                         type: "setting",
                         value: "stopListen",
                     });
                     break;
-                }
-                case "startNotifications": {
+                case "startNotifications": 
                     ToolboxPanel.getPanelWebview()?.postMessage({
                         type: "setting",
                         value: "startNotifications",
                     });
+                    SidebarProvider.notifications = true;
                     break;
-                }
-                case "stopNotifications": {
+                case "stopNotifications":
                     ToolboxPanel.getPanelWebview()?.postMessage({
                         type: "setting",
                         value: "stopNotifications",
                     });
+                    SidebarProvider.notifications = false;
                     break;
-                }
-                case "logout": {
+                case "logout": 
                     TokenManager.setToken("");
                     break;
-                }
-                case "authenticate": {
+                case "authenticate": 
                     authenticate(() => {
                         webviewView.webview.postMessage({
                             type: "token",
@@ -77,30 +75,42 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                         });
                     });
                     break;
-                }
-                case "get-token": {
+                case "get-token": 
                     webviewView.webview.postMessage({
                         type: "token",
                         value: TokenManager.getToken(),
                     });
                     break;
-                }
-                case "onInfo": {
+                case "onInfo": 
                     if (!data.value) {
                         return;
                     }
                     vscode.window.showInformationMessage(data.value);
                     break;
-                }
-                case "onError": {
+                case "onError": 
                     if (!data.value) {
                         return;
                     }
                     vscode.window.showErrorMessage(data.value);
                     break;
-                }
+                case "unlocked": 
+                    SidebarProvider.locked = false;
+                    break;
+                case "initialize":
+                    SidebarProvider.getWebview()?.postMessage({
+                        type: "initialize",
+                        value: SidebarProvider.getSettings(),
+                      });
+                    break;
             }
         });
+    }
+
+    private static getSettings(): string {
+        let result = "";
+        result += (SidebarProvider.notifications)? 1:0;
+        result += (SidebarProvider.locked)? 1:0;
+        return result;
     }
 
     public static getWebview() {

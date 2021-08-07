@@ -14,7 +14,7 @@ import { STUDY_PW } from "../participantPW";
     let listenSettingOn = lastState?.listenSettingOn || false;
     let notificationsSettingOn = lastState?.notificationsSettingOn || true;
     let toolboxInitiated = lastState?.toolboxInitiated || false;
-    let locked = false; // TODO change to true before starting study
+    let locked = false; //lastState?.locked || true; // TODO change to true before starting study
     let pwText = "";
 
     // will be called every time any variable in here changes
@@ -23,11 +23,13 @@ import { STUDY_PW } from "../participantPW";
             listenSettingOn: listenSettingOn, 
             notificationsSettingOn: notificationsSettingOn, 
             toolboxInitiated: toolboxInitiated,
+            locked: locked,
         });
     }
 
     // gets run when panel first gets mounted, good place to add listeners
     onMount(async () => {
+        tsvscode.postMessage({type: 'initialize', value: undefined});
         window.addEventListener("message", async (event) => {
             const message = event.data; // The json data that the extension sent
             switch (message.type) {
@@ -48,6 +50,10 @@ import { STUDY_PW } from "../participantPW";
                     } else if (message.value === "off") {
                         listenSettingOn = false;
                     }
+                    break;
+                case 'initialize':
+                    notificationsSettingOn = (message.value.charAt(0) === '1');
+                    locked = (message.value.charAt(1) === '1');
                     break;
             }
         });
@@ -106,9 +112,11 @@ import { STUDY_PW } from "../participantPW";
     
     <h3 class="DECKS"><strong>D</strong>ialogue-<strong>E</strong>nabled <strong>C</strong>oding <strong>K</strong>nowledge <strong>S</strong>upport</h3>
     {#if locked}
+        <!-- svelte-ignore missing-declaration -->
         <form
         on:submit|preventDefault={async () => {
             if (pwText === STUDY_PW) { // prevention of toolbox use by participants before use
+                tsvscode.postMessage({type: 'unlocked', value: undefined});
                 locked = false;
             }
             pwText = "";

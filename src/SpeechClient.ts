@@ -52,6 +52,7 @@ let request: any = null;
 export class SpeechClient {
 
   private static isConfigured = false;
+  private static isListening = false;
 
   static setSpeechConfiguration(keywords?: string[]) {
     // Set API Key
@@ -72,6 +73,7 @@ export class SpeechClient {
   }
 
   static startSpeechRecognition(keywords?: string[]) {
+    SpeechClient.isListening = true;
 
     if (!SpeechClient.isConfigured) {
       SpeechClient.setSpeechConfiguration(keywords);
@@ -211,6 +213,10 @@ export class SpeechClient {
     });
 
     static restartStream() {
+      if (!SpeechClient.isListening) {
+        return;
+      }
+      
       if (recognizeStream) {
         recognizeStream.end();
         recognizeStream.removeListener('data', SpeechClient.speechCallback);
@@ -237,6 +243,7 @@ export class SpeechClient {
     }
 
     static stopSpeechRecognition() { // not sure if this needs to async
+      SpeechClient.isListening = false;
       if (!recognizeStream) {
         console.log("System was never listening.");
         return;

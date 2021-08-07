@@ -120,8 +120,8 @@
                     }
                     break;
                   case "visible":
-                   isVisible = (message.value === "true");
-                  break;
+                    isVisible = (message.value === "true");
+                    break;
                   case "setting":
                     switch (message.value) {
                       case "startListen":

@@ -3,7 +3,7 @@
 	"displayName": "DECKS",
 	"publisher": "KimYing",
 	"description": "Dialogue-Enabled Coding Knowledge Support",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
